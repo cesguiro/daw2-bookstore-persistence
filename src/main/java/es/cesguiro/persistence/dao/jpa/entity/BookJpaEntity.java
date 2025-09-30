@@ -1,0 +1,135 @@
+package es.cesguiro.persistence.dao.jpa.entity;
+
+import jakarta.persistence.*;
+
+import java.util.List;
+
+@Entity
+@Table(name = "books")
+public class BookJpaEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String isbn;
+    @Column(name = "title_es")
+    private String titleEs;
+    @Column(name = "title_en")
+    private String titleEn;
+    @Column(name = "synopsis_es", length = 2000)
+    private String synopsisEs;
+    @Column(name = "synopsis_en", length = 2000)
+    private String synopsisEn;
+    @Column(name = "base_price")
+    private Double basePrice;
+    @Column(name = "discount_percentage")
+    private Double discountPercentage;
+    private String cover;
+    @Column(name = "publication_date")
+    private String publicationDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private PublisherJpaEntity publisher;
+    @ManyToMany
+    @JoinTable(
+            name = "books_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private List<AuthorJpaEntity> authors;
+
+    public List<AuthorJpaEntity> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(List<AuthorJpaEntity> authors) {
+        this.authors = authors;
+    }
+
+    public Double getBasePrice() {
+        return basePrice;
+    }
+
+    public void setBasePrice(Double basePrice) {
+        this.basePrice = basePrice;
+    }
+
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public Double getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(Double discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
+    public String getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public PublisherJpaEntity getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(PublisherJpaEntity publisher) {
+        this.publisher = publisher;
+    }
+
+    public String getSynopsisEn() {
+        return synopsisEn;
+    }
+
+    public void setSynopsisEn(String synopsisEn) {
+        this.synopsisEn = synopsisEn;
+    }
+
+    public String getSynopsisEs() {
+        return synopsisEs;
+    }
+
+    public void setSynopsisEs(String synopsisEs) {
+        this.synopsisEs = synopsisEs;
+    }
+
+    public String getTitleEn() {
+        return titleEn;
+    }
+
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
+    }
+
+    public String getTitleEs() {
+        return titleEs;
+    }
+
+    public void setTitleEs(String titleEs) {
+        this.titleEs = titleEs;
+    }
+}
