@@ -29,7 +29,6 @@ public class PublisherDaoJpa implements PublisherDao {
                     .getSingleResult();
             return Optional.of(publisherEntity);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return Optional.empty();
         }
     }

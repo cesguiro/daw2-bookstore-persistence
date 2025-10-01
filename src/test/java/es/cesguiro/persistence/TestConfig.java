@@ -1,5 +1,8 @@
 package es.cesguiro.persistence;
 
+import es.cesguiro.persistence.dao.AuthorDao;
+import es.cesguiro.persistence.dao.BookDao;
+import es.cesguiro.persistence.dao.PublisherDao;
 import es.cesguiro.persistence.dao.jpa.AuthorDaoJpa;
 import es.cesguiro.persistence.dao.jpa.BookDaoJpa;
 import es.cesguiro.persistence.dao.jpa.PublisherDaoJpa;
@@ -49,17 +52,17 @@ public class TestConfig {
     }*/
 
     @Bean
-    public PublisherDaoJpa publisherDao(EntityManager entityManager) {
+    public PublisherDao publisherDao(EntityManager entityManager) {
         return new PublisherDaoJpa();
     }
 
     @Bean
-    public BookDaoJpa bookDao(EntityManager entityManager) {
+    public BookDao bookDao(EntityManager entityManager) {
         return new BookDaoJpa();
     }
 
     @Bean
-    public AuthorDaoJpa authorDao(EntityManager entityManager) {
+    public AuthorDao authorDao(EntityManager entityManager) {
         return new AuthorDaoJpa();
     }
 

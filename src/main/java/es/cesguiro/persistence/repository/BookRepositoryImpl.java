@@ -17,7 +17,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public Page<BookEntity> findAll(int page, int size) {
-        return null;
+        return bookDao.findAll(page, size);
     }
 
     @Override

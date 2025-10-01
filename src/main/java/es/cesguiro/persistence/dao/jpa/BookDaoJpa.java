@@ -1,11 +1,15 @@
 package es.cesguiro.persistence.dao.jpa;
 
+import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.BookEntity;
 import es.cesguiro.persistence.dao.BookDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class BookDaoJpa implements BookDao {
 
@@ -26,5 +30,25 @@ public class BookDaoJpa implements BookDao {
         BookJpaEntity bookJpaEntity = BookMapper.INSTANCE.fromBookEntityToBookJpaEntity(bookEntity);
         entityManager.merge(bookJpaEntity);
         return BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaEntity);
+    }
+
+    @Override
+    public Page<BookEntity> findAll(int page, int size) {
+        int pageIndex = Math.max(page - 1, 0);
+
+        String sql = "SELECT b FROM BookJpaEntity b ORDER BY b.id";
+        TypedQuery<BookJpaEntity> bookJpaEntityPage = entityManager
+                .createQuery(sql, BookJpaEntity.class)
+                .setFirstResult(pageIndex * size)
+                .setMaxResults(size);
+        long totalElements = entityManager.createQuery("SELECT COUNT(b) FROM BookJpaEntity b", Long.class)
+                .getSingleResult();
+
+        List<BookEntity> content = bookJpaEntityPage.getResultList()
+                .stream()
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
+                .toList();
+
+        return new Page<>(content, page, size, totalElements);
     }
 }
