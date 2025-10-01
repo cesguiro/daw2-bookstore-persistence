@@ -5,14 +5,12 @@ import es.cesguiro.persistence.dao.BookDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
 public class BookDaoJpa implements BookDao {
 
-    private final EntityManager entityManager;
-
-    public BookDaoJpa(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public BookEntity insert(BookEntity bookEntity) {

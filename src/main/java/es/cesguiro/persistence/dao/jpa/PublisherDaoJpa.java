@@ -4,6 +4,7 @@ import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.PublisherDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
@@ -12,11 +13,8 @@ import java.util.Optional;
 
 public class PublisherDaoJpa implements PublisherDao {
 
-    private final EntityManager entityManager;
-
-    public PublisherDaoJpa(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Optional<PublisherEntity> findBySlug(String slug) {

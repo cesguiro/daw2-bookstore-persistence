@@ -50,17 +50,17 @@ public class TestConfig {
 
     @Bean
     public PublisherDaoJpa publisherDao(EntityManager entityManager) {
-        return new PublisherDaoJpa(entityManager);
+        return new PublisherDaoJpa();
     }
 
     @Bean
     public BookDaoJpa bookDao(EntityManager entityManager) {
-        return new BookDaoJpa(entityManager);
+        return new BookDaoJpa();
     }
 
     @Bean
     public AuthorDaoJpa authorDao(EntityManager entityManager) {
-        return new AuthorDaoJpa(entityManager);
+        return new AuthorDaoJpa();
     }
 
 
