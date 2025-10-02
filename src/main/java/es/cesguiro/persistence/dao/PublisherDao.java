@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface PublisherDao {
 
     Optional<PublisherEntity> findBySlug(String slug);
+    Optional<PublisherEntity> findById(Long id);
 }

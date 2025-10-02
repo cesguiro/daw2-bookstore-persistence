@@ -33,6 +33,12 @@ public class PublisherDaoJpa implements PublisherDao {
         }
     }
 
+    @Override
+    public Optional<PublisherEntity> findById(Long id) {
+        PublisherEntity publisherEntity = entityManager.find(PublisherEntity.class, id);
+        return Optional.ofNullable(publisherEntity);
+    }
+
     /********** CriteriaBuilder version **********/
     public Optional<PublisherEntity> findBySlugCb(String slug) {
         CriteriaBuilder builder = entityManager.getCriteriaBuilder();
