@@ -2,6 +2,8 @@ package es.cesguiro.persistence.dao.jpa;
 
 import es.cesguiro.domain.repository.entity.AuthorEntity;
 import es.cesguiro.persistence.dao.AuthorDao;
+import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
+import es.cesguiro.persistence.dao.jpa.mapper.AuthorMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -14,7 +16,8 @@ public class AuthorDaoJpa implements AuthorDao {
 
     @Override
     public Optional<AuthorEntity> findById(Long id) {
-        AuthorEntity authorEntity = entityManager.find(AuthorEntity.class, id);
+        AuthorEntity authorEntity = AuthorMapper.INSTANCE
+                .authorJpaEntityToAuthorEntity(entityManager.find(AuthorJpaEntity.class, id));
         return Optional.ofNullable(authorEntity);
     }
 }

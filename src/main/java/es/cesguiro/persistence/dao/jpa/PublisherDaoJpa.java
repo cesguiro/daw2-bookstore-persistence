@@ -3,6 +3,7 @@ package es.cesguiro.persistence.dao.jpa;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.PublisherDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
+import es.cesguiro.persistence.dao.jpa.mapper.PublisherMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -35,7 +36,8 @@ public class PublisherDaoJpa implements PublisherDao {
 
     @Override
     public Optional<PublisherEntity> findById(Long id) {
-        PublisherEntity publisherEntity = entityManager.find(PublisherEntity.class, id);
+        PublisherEntity publisherEntity = PublisherMapper.INSTANCE
+                .publisherJpaEntityToPublisherEntity(entityManager.find(PublisherJpaEntity.class, id));
         return Optional.ofNullable(publisherEntity);
     }
 

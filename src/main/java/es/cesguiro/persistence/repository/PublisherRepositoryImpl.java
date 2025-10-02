@@ -16,7 +16,7 @@ public class PublisherRepositoryImpl implements PublisherRepository {
 
     @Override
     public Optional<PublisherEntity> findById(Long id) {
-        return Optional.empty();
+        return publisherDao.findById(id);
     }
 
     @Override
