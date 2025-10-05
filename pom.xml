@@ -50,23 +50,33 @@
         <com.h2database.version>2.3.232</com.h2database.version>
         <org.flywaydb.version>11.3.0</org.flywaydb.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <org.spring.boot.starter.data.jpa.version>3.5.6</org.spring.boot.starter.data.jpa.version>
+        <org.spring.boot.starter.data.redis.version>3.5.6</org.spring.boot.starter.data.redis.version>
     </properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
         <dependency>
             <groupId>es.cesguiro</groupId>
             <artifactId>daw2-bookstore-domain</artifactId>
             <version>${es.cesguiro.daw2-bookstore-domain.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${org.spring.boot.starter.data.jpa.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <version>${org.spring.boot.starter.data.redis.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${org.mapstruct.version}</version>
         </dependency>
+
+        <!-- Dependencias para pruebas -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>

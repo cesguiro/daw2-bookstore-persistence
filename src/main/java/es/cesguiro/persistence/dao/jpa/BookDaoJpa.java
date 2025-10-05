@@ -2,6 +2,7 @@ package es.cesguiro.persistence.dao.jpa;
 
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.BookEntity;
+import es.cesguiro.domain.service.dto.BookDto;
 import es.cesguiro.persistence.dao.BookDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;
@@ -10,6 +11,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
+import java.util.Optional;
 
 public class BookDaoJpa implements BookDao {
 
@@ -33,6 +35,17 @@ public class BookDaoJpa implements BookDao {
     }
 
     @Override
+    public void deleteById(Long id) {
+        entityManager.remove(entityManager.find(BookJpaEntity.class, id));
+    }
+
+    @Override
+    public long count() {
+        return entityManager.createQuery("SELECT COUNT(b) FROM BookJpaEntity b", Long.class)
+                .getSingleResult();
+    }
+
+    @Override
     public Page<BookEntity> findAll(int page, int size) {
         int pageIndex = Math.max(page - 1, 0);
 
@@ -41,14 +54,38 @@ public class BookDaoJpa implements BookDao {
                 .createQuery(sql, BookJpaEntity.class)
                 .setFirstResult(pageIndex * size)
                 .setMaxResults(size);
-        long totalElements = entityManager.createQuery("SELECT COUNT(b) FROM BookJpaEntity b", Long.class)
-                .getSingleResult();
 
         List<BookEntity> content = bookJpaEntityPage.getResultList()
                 .stream()
                 .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
                 .toList();
 
-        return new Page<>(content, page, size, totalElements);
+        return new Page<>(content, page, size, count());
+    }
+
+    @Override
+    public Optional<BookEntity> findById(Long id) {
+        return Optional.ofNullable(entityManager.find(BookJpaEntity.class, id))
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity);
+    }
+
+    @Override
+    public Optional<BookEntity> findByIsbn(String isbn) {
+        String sql = "SELECT b FROM BookJpaEntity b WHERE b.isbn = :isbn";
+        try {
+            BookJpaEntity bookJpaEntity = entityManager.createQuery(sql, BookJpaEntity.class)
+                    .setParameter("isbn", isbn)
+                    .getSingleResult();
+            return Optional.of(BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaEntity));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public void deleteByIsbn(String isbn) {
+        entityManager.createQuery("DELETE FROM BookJpaEntity b WHERE b.isbn = :isbn")
+                .setParameter("isbn", isbn)
+                .executeUpdate();
     }
 }

@@ -1,5 +1,6 @@
 package es.cesguiro.persistence.dao.jpa;
 
+import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.PublisherDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -35,10 +36,35 @@ public class PublisherDaoJpa implements PublisherDao {
     }
 
     @Override
+    public Page<PublisherEntity> findAll(int page, int size) {
+        return null;
+    }
+
+    @Override
     public Optional<PublisherEntity> findById(Long id) {
         PublisherEntity publisherEntity = PublisherMapper.INSTANCE
                 .publisherJpaEntityToPublisherEntity(entityManager.find(PublisherJpaEntity.class, id));
         return Optional.ofNullable(publisherEntity);
+    }
+
+    @Override
+    public PublisherEntity insert(PublisherEntity entity) {
+        return null;
+    }
+
+    @Override
+    public PublisherEntity update(PublisherEntity entity) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+    }
+
+    @Override
+    public long count() {
+        return 0;
     }
 
     /********** CriteriaBuilder version **********/

@@ -1,10 +1,14 @@
 package es.cesguiro.persistence.dao.jpa.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
+
+import java.io.Serializable;
 
 @Entity
- @Table(name = "publishers")
-public class PublisherJpaEntity {
+@Table(name = "publishers")
+@RedisHash("Publisher")
+public class PublisherJpaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

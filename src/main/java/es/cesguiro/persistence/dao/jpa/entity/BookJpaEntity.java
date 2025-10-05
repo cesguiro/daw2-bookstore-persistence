@@ -1,16 +1,21 @@
 package es.cesguiro.persistence.dao.jpa.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
+import org.springframework.data.redis.core.index.Indexed;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "books")
-public class BookJpaEntity {
+@RedisHash("Book")
+public class BookJpaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Indexed
     private String isbn;
     @Column(name = "title_es")
     private String titleEs;

@@ -4,6 +4,7 @@ import es.cesguiro.domain.repository.entity.AuthorEntity;
 
 import java.util.Optional;
 
-public interface AuthorDao {
-    Optional<AuthorEntity> findById(Long id);
+public interface AuthorDao extends  GenericDao<AuthorEntity> {
+
+    Optional<AuthorEntity> findBySlug(String slug);
 }

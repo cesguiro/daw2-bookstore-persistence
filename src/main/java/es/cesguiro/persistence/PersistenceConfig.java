@@ -6,13 +6,16 @@ import es.cesguiro.persistence.dao.PublisherDao;
 import es.cesguiro.persistence.dao.jpa.AuthorDaoJpa;
 import es.cesguiro.persistence.dao.jpa.BookDaoJpa;
 import es.cesguiro.persistence.dao.jpa.PublisherDaoJpa;
+import es.cesguiro.persistence.dao.redis.BookRedisDao;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "es.cesguiro.persistence.dao.jpa")
+@EnableRedisRepositories(basePackages = "es.cesguiro.persistence.dao.redis")
 @EntityScan(basePackages = "es.cesguiro.persistence.dao.jpa.entity")
 public class PersistenceConfig {
 
@@ -31,4 +34,5 @@ public class PersistenceConfig {
     public AuthorDao authorDao() {
         return new AuthorDaoJpa();
     }
+
 }

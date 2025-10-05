@@ -2,10 +2,12 @@ package es.cesguiro.persistence.dao;
 
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.BookEntity;
+import es.cesguiro.domain.service.dto.BookDto;
 
-public interface BookDao {
+import java.util.Optional;
 
-    BookEntity insert(BookEntity bookEntity);
-    BookEntity update(BookEntity bookEntity);
-    Page<BookEntity> findAll(int page, int size);
+public interface BookDao extends GenericDao<BookEntity> {
+
+    Optional<BookEntity> findByIsbn(String isbn);
+    void deleteByIsbn(String isbn);
 }
