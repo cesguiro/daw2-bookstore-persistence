@@ -23,8 +23,6 @@ public class AuthorJpaEntity implements Serializable {
     private Integer birthYear;
     private Integer deathYear;
     private String slug;
-    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
-    private List<BookJpaEntity> books;
 
     public String getBiographyEn() {
         return biographyEn;

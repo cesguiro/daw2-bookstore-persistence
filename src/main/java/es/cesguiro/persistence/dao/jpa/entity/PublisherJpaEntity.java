@@ -16,8 +16,6 @@ public class PublisherJpaEntity implements Serializable {
     private Long id;
     private String name;
     private String slug;
-    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY)
-    private List<BookJpaEntity> books;
 
     public PublisherJpaEntity(Long id, String name, String slug) {
         this.id = id;
