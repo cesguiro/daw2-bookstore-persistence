@@ -2,12 +2,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.5.6</version>
-		<relativePath/> <!-- lookup parent from repository -->
-	</parent>
 	<groupId>es.cesguiro</groupId>
 	<artifactId>daw2-bookstore-persistence</artifactId>
 	<version>1.0-SNAPSHOT</version>
@@ -50,8 +44,8 @@
         <com.h2database.version>2.3.232</com.h2database.version>
         <org.flywaydb.version>11.3.0</org.flywaydb.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
-        <org.spring.boot.starter.data.jpa.version>3.5.6</org.spring.boot.starter.data.jpa.version>
-        <org.spring.boot.starter.data.redis.version>3.5.6</org.spring.boot.starter.data.redis.version>
+        <org.spring.boot.version>3.5.6</org.spring.boot.version>
+        <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
     </properties>
 
 	<dependencies>
@@ -60,15 +54,15 @@
             <artifactId>daw2-bookstore-domain</artifactId>
             <version>${es.cesguiro.daw2-bookstore-domain.version}</version>
         </dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-            <version>${org.spring.boot.starter.data.jpa.version}</version>
-		</dependency>
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>${jakarta.persistence-api.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
-            <version>${org.spring.boot.starter.data.redis.version}</version>
+            <version>${org.spring.boot.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -77,11 +71,20 @@
         </dependency>
 
         <!-- Dependencias para pruebas -->
-		<dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>${org.spring.boot.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+            <version>${org.spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>

@@ -7,19 +7,10 @@ import es.cesguiro.persistence.dao.jpa.AuthorDaoJpa;
 import es.cesguiro.persistence.dao.jpa.BookDaoJpa;
 import es.cesguiro.persistence.dao.jpa.PublisherDaoJpa;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.Persistence;
-import org.flywaydb.core.Flyway;
-import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.boot.jdbc.DataSourceBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import javax.sql.DataSource;
-import java.util.Map;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "es.cesguiro.persistence.dao.jpa")

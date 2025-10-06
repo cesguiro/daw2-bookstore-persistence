@@ -2,7 +2,6 @@ package es.cesguiro.persistence.dao.jpa;
 
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.BookEntity;
-import es.cesguiro.domain.service.dto.BookDto;
 import es.cesguiro.persistence.dao.BookDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;

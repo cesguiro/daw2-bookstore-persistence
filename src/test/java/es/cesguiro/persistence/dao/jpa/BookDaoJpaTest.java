@@ -7,6 +7,7 @@ import es.cesguiro.domain.repository.entity.AuthorEntity;
 import es.cesguiro.domain.repository.entity.BookEntity;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.TestConfig;
+import es.cesguiro.persistence.dao.BookDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeAll;
@@ -15,7 +16,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
@@ -29,13 +32,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookDaoJpaTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    private BookDaoJpa bookDaoJpa;
+    private BookDao bookDao;
 
     private static List<BookEntity> bookEntities;
     private static List<PublisherEntity> publisherEntities;
@@ -75,7 +79,7 @@ class BookDaoJpaTest {
         long countBefore = entityManager.createQuery(sql, Long.class)
                 .getSingleResult();
 
-        BookEntity result = bookDaoJpa.insert(newBook);
+        BookEntity result = bookDao.insert(newBook);
 
         long countAfter = entityManager.createQuery(sql, Long.class)
                 .getSingleResult();
@@ -158,7 +162,7 @@ class BookDaoJpaTest {
         );
 
         // Ejecutamos la actualización
-        BookEntity result = bookDaoJpa.update(updatedBook);
+        BookEntity result = bookDao.update(updatedBook);
 
         // Asserts
         assertAll(

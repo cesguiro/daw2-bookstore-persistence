@@ -3,13 +3,16 @@ package es.cesguiro.persistence.dao.jpa;
 import es.cesguiro.data.loader.PublishersDataLoader;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.TestConfig;
+import es.cesguiro.persistence.dao.PublisherDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -19,13 +22,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class PublisherDaoJpaTest {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
-    private PublisherDaoJpa publisherDaoJpa;
+    private PublisherDao publisherDao;
 
     /*@Autowired
     private Flyway flyway;
@@ -49,7 +53,7 @@ class PublisherDaoJpaTest {
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
     void testFindBySlug() {
         PublisherEntity expected = publisherEntities.getFirst();
-        Optional<PublisherEntity> result = publisherDaoJpa.findBySlug(expected.slug());
+        Optional<PublisherEntity> result = publisherDao.findBySlug(expected.slug());
         assertAll(
                 () -> assertTrue(result.isPresent()),
                 () -> assertEquals(expected.id(), result.get().id()),
@@ -62,7 +66,7 @@ class PublisherDaoJpaTest {
     @DisplayName("Test findBySlugCb methor returns Optional<PublisherEntity>")
     void testFindBySlugCb() {
         PublisherEntity expected = publisherEntities.getFirst();
-        Optional<PublisherEntity> result = publisherDaoJpa.findBySlugCb(expected.slug());
+        Optional<PublisherEntity> result = publisherDao.findBySlug(expected.slug());
         assertAll(
                 () -> assertTrue(result.isPresent()),
                 () -> assertEquals(expected.id(), result.get().id()),
