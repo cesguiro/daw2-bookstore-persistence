@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "authors")
@@ -22,6 +23,8 @@ public class AuthorJpaEntity implements Serializable {
     private Integer birthYear;
     private Integer deathYear;
     private String slug;
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
+    private List<BookJpaEntity> books;
 
     public String getBiographyEn() {
         return biographyEn;
