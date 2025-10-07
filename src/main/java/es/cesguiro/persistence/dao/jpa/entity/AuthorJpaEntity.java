@@ -23,11 +23,23 @@ public class AuthorJpaEntity implements Serializable {
     private Integer birthYear;
     private Integer deathYear;
     private String slug;
-    @OneToMany(mappedBy = "author")
-    private List<BookAuthorJpaEntity> bookAuthors;
+    /*@OneToMany(mappedBy = "author")
+    private List<BookAuthorJpaEntity> bookAuthors;*/
 
     public AuthorJpaEntity() {
     }
+
+    /*public List<BookJpaEntity> getBookAuthors() {
+        return bookAuthors.stream().map(BookAuthorJpaEntity::getBook).toList();
+    }
+
+    public void setBookAuthors(List<BookJpaEntity> bookAuthors) {
+        this.bookAuthors.clear();
+        for (BookJpaEntity book : bookAuthors) {
+            BookAuthorJpaEntity bookAuthor = new BookAuthorJpaEntity(book, this);
+            this.bookAuthors.add(bookAuthor);
+        }
+    }*/
 
     public String getBiographyEn() {
         return biographyEn;

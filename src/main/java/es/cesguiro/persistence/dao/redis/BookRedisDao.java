@@ -9,5 +9,6 @@ import java.util.Optional;
 @Repository
 public interface BookRedisDao extends CrudRepository<BookJpaEntity, Long> {
 
-    public Optional<BookJpaEntity> findByIsbn(String isbn);
+    Optional<BookJpaEntity> findByIsbn(String isbn);
+
 }

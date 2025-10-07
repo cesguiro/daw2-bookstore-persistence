@@ -3,7 +3,9 @@ package es.cesguiro.persistence.dao.jpa;
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.entity.BookEntity;
 import es.cesguiro.persistence.dao.BookDao;
+import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
+import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
 import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -28,9 +30,35 @@ public class BookDaoJpa implements BookDao {
 
     @Override
     public BookEntity update(BookEntity bookEntity) {
-        BookJpaEntity bookJpaEntity = BookMapper.INSTANCE.fromBookEntityToBookJpaEntity(bookEntity);
-        entityManager.merge(bookJpaEntity);
-        return BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaEntity);
+        BookJpaEntity managed = entityManager.find(BookJpaEntity.class, bookEntity.id());
+        if (managed == null) {
+            throw new IllegalArgumentException("Book with id " + bookEntity.id() + " not found");
+        }
+        managed.setIsbn(bookEntity.isbn());
+        managed.setTitleEs(bookEntity.titleEs());
+        managed.setTitleEn(bookEntity.titleEn());
+        managed.setSynopsisEs(bookEntity.synopsisEs());
+        managed.setSynopsisEn(bookEntity.synopsisEn());
+        managed.setBasePrice(bookEntity.basePrice().doubleValue());
+        managed.setDiscountPercentage(bookEntity.discountPercentage());
+        managed.setCover(bookEntity.cover());
+        managed.setPublicationDate(bookEntity.publicationDate().toString());
+
+        PublisherJpaEntity publisherRef = bookEntity.publisher() != null
+                ? entityManager.getReference(PublisherJpaEntity.class, bookEntity.publisher().id())
+                :null;
+        managed.setPublisher(publisherRef);
+
+        List<AuthorJpaEntity> authorRefs = (bookEntity.authors() != null)
+                ? bookEntity.authors().stream()
+                    .map(author -> entityManager.getReference(AuthorJpaEntity.class, author.id()))
+                    .toList()
+                : List.of();
+        managed.getBookAuthors().clear();
+        entityManager.flush();
+        managed.setAuthors(authorRefs);
+
+        return BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(managed);
     }
 
     @Override

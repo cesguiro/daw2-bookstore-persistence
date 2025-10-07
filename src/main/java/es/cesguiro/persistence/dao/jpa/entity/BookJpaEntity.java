@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.index.Indexed;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "books")
@@ -36,29 +37,40 @@ public class BookJpaEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private PublisherJpaEntity publisher;
+
+
     /*@ManyToMany
-    @JoinTable(
-            name = "books_authors",
-            joinColumns = @JoinColumn(name = "book_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id")
-    )
-    private List<AuthorJpaEntity> authors;*/
-    @OneToMany(mappedBy = "book")
+        @JoinTable(
+                name = "books_authors",
+                joinColumns = @JoinColumn(name = "book_id"),
+                inverseJoinColumns = @JoinColumn(name = "author_id")
+        )
+        private List<AuthorJpaEntity> authors;*/
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BookAuthorJpaEntity> bookAuthors = new ArrayList<>();
 
     public BookJpaEntity() {
     }
 
+    public List<BookAuthorJpaEntity> getBookAuthors() {
+        return bookAuthors;
+    }
+
+    public void setBookAuthors(List<BookAuthorJpaEntity> bookAuthors) {
+        this.bookAuthors = bookAuthors;
+    }
 
     public List<AuthorJpaEntity> getAuthors() {
-        return bookAuthors.stream().map(BookAuthorJpaEntity::getAuthor).toList();
+        return bookAuthors.stream().map(BookAuthorJpaEntity::getAuthor).collect(Collectors.toList());
     }
 
     public void setAuthors(List<AuthorJpaEntity> authors) {
         this.bookAuthors.clear();
         for (AuthorJpaEntity author : authors) {
-            this.bookAuthors.add(new BookAuthorJpaEntity(this, author));
+            BookAuthorJpaEntity bookAuthor = new BookAuthorJpaEntity(this, author);
+            this.bookAuthors.add(bookAuthor);
         }
+
     }
 
     public Double getBasePrice() {

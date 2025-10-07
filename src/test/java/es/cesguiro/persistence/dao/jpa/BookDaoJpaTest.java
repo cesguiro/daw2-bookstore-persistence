@@ -10,11 +10,14 @@ import es.cesguiro.persistence.TestConfig;
 import es.cesguiro.persistence.dao.BookDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,6 +30,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,9 +61,20 @@ class BookDaoJpaTest {
 
     }
 
-    @Test
+    static Stream<Arguments> provideInsertBookData() {
+        return Stream.of(
+                Arguments.of(publisherEntities.getFirst(), List.of(authorEntities.get(0), authorEntities.get(1))),
+                Arguments.of(publisherEntities.get(1), List.of(authorEntities.get(2))),
+                Arguments.of(new PublisherEntity(1L, null, null), List.of(authorEntities.get(2))),
+                Arguments.of(publisherEntities.get(1), List.of(
+                        new AuthorEntity(1L, null, null, null, null, null, null, null)
+                ))
+        );
+    }
+    @ParameterizedTest
+    @MethodSource("provideInsertBookData")
     @DisplayName("Test insert method persists BookEntity")
-    void testInsert() {
+    void testInsert(PublisherEntity publisherEntity, List<AuthorEntity> authorEntities) {
         BookEntity newBook = new BookEntity(
                 null,
                 "666666666666",
@@ -71,8 +86,8 @@ class BookDaoJpaTest {
                 10.0,
                 "new_book_cover.jpg",
                 LocalDate.of(2024, 1, 1),
-                publisherEntities.getFirst(), // Assuming the first publisher exists
-                List.of(authorEntities.get(0), authorEntities.get(1)) // Assuming the first two authors exist
+                publisherEntity, // Assuming the first publisher exists
+                authorEntities // Assuming the first two authors exist
         );
 
         String sql = "SELECT COUNT(b) FROM BookJpaEntity b";
@@ -115,6 +130,7 @@ class BookDaoJpaTest {
 
     @ParameterizedTest
     @DisplayName("Test update method modifies existing BookEntity")
+    @Transactional
     @CsvSource({
         "9777777777777, El principito, 15.99, 1, 1",
         "9780142424179, Nuevo título, 15.99, 1, 1",
@@ -135,7 +151,7 @@ class BookDaoJpaTest {
                 .toList();
 
         // Seleccionamos un libro existente
-        BookEntity bookToUpdate = bookEntities.getFirst();
+        BookEntity bookToUpdate = bookDao.findById(bookEntities.getFirst().id()).get();
 
         // Construimos la lista de AuthorEntity correspondientes
         List<AuthorEntity> updatedAuthors = authorEntities.stream()

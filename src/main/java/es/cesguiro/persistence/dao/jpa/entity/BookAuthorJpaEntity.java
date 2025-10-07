@@ -3,18 +3,18 @@ package es.cesguiro.persistence.dao.jpa.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "book_authors")
+@Table(name = "book_author")
 public class BookAuthorJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private BookJpaEntity book;
 
-    @ManyToOne
+    @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "author_id")
     private AuthorJpaEntity author;
 
