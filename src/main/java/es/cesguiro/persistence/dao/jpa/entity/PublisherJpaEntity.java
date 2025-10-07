@@ -16,15 +16,17 @@ public class PublisherJpaEntity implements Serializable {
     private Long id;
     private String name;
     private String slug;
+    @OneToMany(mappedBy = "publisher")
+    private List<BookJpaEntity> books;
+
+    public PublisherJpaEntity() {
+
+    }
 
     public PublisherJpaEntity(Long id, String name, String slug) {
         this.id = id;
         this.name = name;
         this.slug = slug;
-    }
-
-    public PublisherJpaEntity() {
-
     }
 
     public Long getId() {

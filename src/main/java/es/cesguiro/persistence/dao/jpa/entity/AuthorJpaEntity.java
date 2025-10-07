@@ -23,6 +23,11 @@ public class AuthorJpaEntity implements Serializable {
     private Integer birthYear;
     private Integer deathYear;
     private String slug;
+    @OneToMany(mappedBy = "author")
+    private List<BookAuthorJpaEntity> bookAuthors;
+
+    public AuthorJpaEntity() {
+    }
 
     public String getBiographyEn() {
         return biographyEn;

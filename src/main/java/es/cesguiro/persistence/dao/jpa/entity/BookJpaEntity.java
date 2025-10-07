@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -33,21 +34,31 @@ public class BookJpaEntity implements Serializable {
     @Column(name = "publication_date")
     private String publicationDate;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "publisher_id")
     private PublisherJpaEntity publisher;
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(
             name = "books_authors",
             joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id")
     )
-    private List<AuthorJpaEntity> authors;
+    private List<AuthorJpaEntity> authors;*/
+    @OneToMany(mappedBy = "book")
+    private List<BookAuthorJpaEntity> bookAuthors = new ArrayList<>();
+
+    public BookJpaEntity() {
+    }
+
 
     public List<AuthorJpaEntity> getAuthors() {
-        return authors;
+        return bookAuthors.stream().map(BookAuthorJpaEntity::getAuthor).toList();
     }
 
     public void setAuthors(List<AuthorJpaEntity> authors) {
-        this.authors = authors;
+        this.bookAuthors.clear();
+        for (AuthorJpaEntity author : authors) {
+            this.bookAuthors.add(new BookAuthorJpaEntity(this, author));
+        }
     }
 
     public Double getBasePrice() {
