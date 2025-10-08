@@ -43,17 +43,17 @@ public class TestConfig {
     }*/
 
     @Bean
-    public PublisherJpaDao publisherDao(EntityManager entityManager) {
+    public PublisherJpaDao publisherJpaDao(EntityManager entityManager) {
         return new PublisherJpaDaoJpaImpl();
     }
 
     @Bean
-    public BookJpaDao bookDao(EntityManager entityManager) {
+    public BookJpaDao bookJpaDao(EntityManager entityManager) {
         return new BookJpaDaoJpaImpl();
     }
 
     @Bean
-    public AuthorJpaDao authorDao(EntityManager entityManager) {
+    public AuthorJpaDao authorJpaDao(EntityManager entityManager) {
         return new AuthorJpaDaoJpaImpl();
     }
 

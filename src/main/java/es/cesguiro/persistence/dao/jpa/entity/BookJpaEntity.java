@@ -34,8 +34,6 @@ public class BookJpaEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private PublisherJpaEntity publisher;
-
-
     /*@ManyToMany
         @JoinTable(
                 name = "books_authors",

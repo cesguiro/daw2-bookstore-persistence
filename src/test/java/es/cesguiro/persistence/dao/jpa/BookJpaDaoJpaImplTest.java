@@ -16,6 +16,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -40,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class BookJpaDaoJpaImplTest {
 
-    /*@PersistenceContext
+    @PersistenceContext
     private EntityManager entityManager;
 
     @Autowired
@@ -52,20 +53,23 @@ class BookJpaDaoJpaImplTest {
     @Autowired
     private AuthorJpaDao authorJpaDao;
 
-    static Stream<Arguments> provideInsertBookData() {
-        return Stream.of(
-                Arguments.of(publisherEntities.getFirst(), List.of(authorEntities.get(0), authorEntities.get(1))),
-                Arguments.of(publisherEntities.get(1), List.of(authorEntities.get(2))),
-                Arguments.of(new PublisherEntity(1L, null, null), List.of(authorEntities.get(2))),
-                Arguments.of(publisherEntities.get(1), List.of(
-                        new AuthorEntity(1L, null, null, null, null, null, null, null)
-                ))
-        );
-    }
-    @ParameterizedTest
-    @MethodSource("provideInsertBookData")
+
+    @Test
     @DisplayName("Test insert method persists BookJpaEntity")
-    void testInsert(PublisherJpaEntity publisherJpaEntity, List<AuthorJpaEntity> authorJpaEntities) {
+    void testInsert() {
+        PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
+        publisherJpaEntity.setName("Editorial X");
+        publisherJpaEntity.setSlug("editorial-x");
+        entityManager.persist(publisherJpaEntity);
+
+        AuthorJpaEntity authorJpaEntity1 = new AuthorJpaEntity();
+        authorJpaEntity1.setName("Author One");
+        entityManager.persist(authorJpaEntity1);
+        AuthorJpaEntity authorJpaEntity2 = new AuthorJpaEntity();
+        authorJpaEntity2.setName("Author Two");
+        entityManager.persist(authorJpaEntity2);
+
+
         BookJpaEntity newBook = new BookJpaEntity(
                 null,
                 "666666666666",
@@ -78,7 +82,7 @@ class BookJpaDaoJpaImplTest {
                 "new_book_cover.jpg",
                 LocalDate.of(2024, 1, 1).toString(),
                 publisherJpaEntity, // Assuming the first publisher exists
-                authorJpaEntities // Assuming the first two authors exist
+                List.of(authorJpaEntity1, authorJpaEntity2) // Assuming the first two authors exist
         );
 
         String sql = "SELECT COUNT(b) FROM BookJpaEntity b";
@@ -119,7 +123,7 @@ class BookJpaDaoJpaImplTest {
         );
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @DisplayName("Test update method modifies existing BookJpaEntity")
     @Transactional
     @CsvSource({

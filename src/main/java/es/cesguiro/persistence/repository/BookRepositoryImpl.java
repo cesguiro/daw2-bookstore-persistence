@@ -6,6 +6,7 @@ import es.cesguiro.domain.repository.entity.BookEntity;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.redis.BookRedisDao;
+import es.cesguiro.persistence.dao.redis.entity.BookRedisEntity;
 import es.cesguiro.persistence.repository.mapper.BookMapper;
 
 import java.util.List;
@@ -34,24 +35,24 @@ public class BookRepositoryImpl implements BookRepository {
     public Optional<BookEntity> findByIsbn(String isbn) {
 
         // 1️⃣ Buscar en Redis
-        /*Optional<BookJpaEntity> bookFromCache = bookRedisDao.findByIsbn(isbn);
+        Optional<BookRedisEntity> bookFromCache = bookRedisDao.findByIsbn(isbn);
 
         if (bookFromCache.isPresent()) {
             System.out.println("✅ Cache HIT en Redis");
-            return Optional.of(BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookFromCache.get()));
+            return Optional.of(BookMapper.INSTANCE.fromBookRedisEntityToBookEntity(bookFromCache.get()));
         }
 
-        System.out.println("❌ Cache MISS — buscando en la base de datos");*/
+        System.out.println("❌ Cache MISS — buscando en la base de datos");
 
         // 2️⃣ Buscar en la base de datos
         Optional<BookEntity> bookFromDb = bookJpaDao.findByIsbn(isbn)
                 .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity);
 
         // 3️⃣ Si se encuentra en BD, guardar en Redis para la próxima vez
-        /*bookFromDb.ifPresent(book -> {
-            bookRedisDao.save(BookMapper.INSTANCE.fromBookEntityToBookJpaEntity(book));
+        bookFromDb.ifPresent(book -> {
+            bookRedisDao.save(BookMapper.INSTANCE.fromBookEntityToBookRedisEntity(book));
             System.out.println("📦 Guardado en Redis para la próxima vez");
-        });*/
+        });
 
         // 4️⃣ Devolver mapeado al modelo de dominio
         return bookFromDb;

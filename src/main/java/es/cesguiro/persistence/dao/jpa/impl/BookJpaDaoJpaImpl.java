@@ -1,5 +1,6 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
+import es.cesguiro.domain.exception.ResourceNotFoundException;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
@@ -25,34 +26,12 @@ public class BookJpaDaoJpaImpl implements BookJpaDao {
     @Override
     public BookJpaEntity update(BookJpaEntity bookJpaEntity) {
         BookJpaEntity managed = entityManager.find(BookJpaEntity.class, bookJpaEntity.getId());
-        if (managed == null) {
-            throw new IllegalArgumentException("Book with id " + bookJpaEntity.getId() + " not found");
+        if(managed == null) {
+            throw new ResourceNotFoundException("Book with id " + bookJpaEntity.getId() + " not found");
         }
-        managed.setIsbn(bookJpaEntity.getIsbn());
-        managed.setTitleEs(bookJpaEntity.getTitleEs());
-        managed.setTitleEn(bookJpaEntity.getTitleEn());
-        managed.setSynopsisEs(bookJpaEntity.getSynopsisEs());
-        managed.setSynopsisEn(bookJpaEntity.getSynopsisEn());
-        managed.setBasePrice(bookJpaEntity.getBasePrice());
-        managed.setDiscountPercentage(bookJpaEntity.getDiscountPercentage());
-        managed.setCover(bookJpaEntity.getCover());
-        managed.setPublicationDate(bookJpaEntity.getPublicationDate().toString());
-
-        PublisherJpaEntity publisherRef = bookJpaEntity.getPublisher() != null
-                ? entityManager.getReference(PublisherJpaEntity.class, bookJpaEntity.getPublisher())
-                :null;
-        managed.setPublisher(publisherRef);
-
-        List<AuthorJpaEntity> authorRefs = (bookJpaEntity.getAuthors() != null)
-                ? bookJpaEntity.getAuthors().stream()
-                    .map(author -> entityManager.getReference(AuthorJpaEntity.class, bookJpaEntity.getAuthors()))
-                    .toList()
-                : List.of();
         managed.getBookAuthors().clear();
         entityManager.flush();
-        managed.setAuthors(authorRefs);
-
-        return managed;
+        return entityManager.merge(bookJpaEntity);
     }
 
     @Override

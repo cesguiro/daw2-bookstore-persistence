@@ -27,6 +27,17 @@ public class AuthorJpaEntity implements Serializable {
     public AuthorJpaEntity() {
     }
 
+    public AuthorJpaEntity(Long id, String name, String nationality, String biographyEs, String biographyEn, Integer birthYear, Integer deathYear, String slug) {
+        this.id = id;
+        this.name = name;
+        this.nationality = nationality;
+        this.biographyEs = biographyEs;
+        this.biographyEn = biographyEn;
+        this.birthYear = birthYear;
+        this.deathYear = deathYear;
+        this.slug = slug;
+    }
+
     /*public List<BookJpaEntity> getBookAuthors() {
         return bookAuthors.stream().map(BookAuthorJpaEntity::getBook).toList();
     }

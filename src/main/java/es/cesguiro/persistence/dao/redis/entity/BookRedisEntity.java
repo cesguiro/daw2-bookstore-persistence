@@ -23,8 +23,8 @@ public class BookRedisEntity implements Serializable {
     private String cover;
     private String publicationDate;
 
-    private Long publisherId;
-    private List<Long> authorIds;
+    private PublisherRedisEntity publisher;
+    private List<AuthorRedisEntity> authors;
 
     public BookRedisEntity() {
     }
@@ -109,19 +109,19 @@ public class BookRedisEntity implements Serializable {
         this.publicationDate = publicationDate;
     }
 
-    public Long getPublisherId() {
-        return publisherId;
+    public PublisherRedisEntity getPublisher() {
+        return publisher;
     }
 
-    public void setPublisherId(Long publisherId) {
-        this.publisherId = publisherId;
+    public void setPublisher(PublisherRedisEntity publisher) {
+        this.publisher = publisher;
     }
 
-    public List<Long> getAuthorIds() {
-        return authorIds;
+    public List<AuthorRedisEntity> getAuthors() {
+        return authors;
     }
 
-    public void setAuthorIds(List<Long> authorIds) {
-        this.authorIds = authorIds;
+    public void setAuthors(List<AuthorRedisEntity> authors) {
+        this.authors = authors;
     }
 }
