@@ -2,7 +2,9 @@ package es.cesguiro.persistence.repository;
 
 import es.cesguiro.data.loader.PublishersDataLoader;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
-import es.cesguiro.persistence.dao.PublisherDao;
+import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
+import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
+import es.cesguiro.persistence.repository.mapper.PublisherMapper;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ import static org.mockito.Mockito.when;
 class PublisherRepositoryImplTest {
 
     @Mock
-    private PublisherDao publisherDao;
+    private PublisherJpaDao publisherDao;
 
     @InjectMocks
     private PublisherRepositoryImpl publisherRepositoryImpl;
@@ -39,7 +41,8 @@ class PublisherRepositoryImplTest {
     void testFindBySlug() {
         String slug = "editorial-sudamericana";
         PublisherEntity expected = publisherEntities.getFirst();
-        when(publisherDao.findBySlug(slug)).thenReturn(Optional.of(expected));
+        PublisherJpaEntity jpaEntity = PublisherMapper.INSTANCE.publisherEntityToPublisherJpaEntity(expected);
+        when(publisherDao.findBySlug(slug)).thenReturn(Optional.of(jpaEntity));
 
         Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug(slug);
         assertAll(

@@ -1,23 +1,20 @@
 package es.cesguiro.persistence.dao.jpa.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.redis.core.RedisHash;
-import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "books")
-@RedisHash("Book")
 public class BookJpaEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Indexed
     private String isbn;
     @Column(name = "title_es")
     private String titleEs;
@@ -28,7 +25,7 @@ public class BookJpaEntity implements Serializable {
     @Column(name = "synopsis_en", length = 2000)
     private String synopsisEn;
     @Column(name = "base_price")
-    private Double basePrice;
+    private BigDecimal basePrice;
     @Column(name = "discount_percentage")
     private Double discountPercentage;
     private String cover;
@@ -52,6 +49,21 @@ public class BookJpaEntity implements Serializable {
     public BookJpaEntity() {
     }
 
+    public BookJpaEntity(Long id, String isbn, String titleEs, String titleEn, String synopsisEs, String synopsisEn, BigDecimal basePrice, Double discountPercentage, String cover, String publicationDate, PublisherJpaEntity publisher, List<AuthorJpaEntity> authors) {
+        this.id = id;
+        this.isbn = isbn;
+        this.titleEs = titleEs;
+        this.titleEn = titleEn;
+        this.synopsisEs = synopsisEs;
+        this.synopsisEn = synopsisEn;
+        this.basePrice = basePrice;
+        this.discountPercentage = discountPercentage;
+        this.cover = cover;
+        this.publicationDate = publicationDate;
+        this.publisher = publisher;
+        setAuthors(authors);
+    }
+
     public List<BookAuthorJpaEntity> getBookAuthors() {
         return bookAuthors;
     }
@@ -73,11 +85,11 @@ public class BookJpaEntity implements Serializable {
 
     }
 
-    public Double getBasePrice() {
+    public BigDecimal getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(Double basePrice) {
+    public void setBasePrice(BigDecimal basePrice) {
         this.basePrice = basePrice;
     }
 

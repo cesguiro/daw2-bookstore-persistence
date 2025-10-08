@@ -1,14 +1,9 @@
-package es.cesguiro.persistence.dao.jpa.mapper;
+package es.cesguiro.persistence.repository.mapper;
 
-import es.cesguiro.domain.repository.entity.AuthorEntity;
 import es.cesguiro.domain.repository.entity.BookEntity;
-import es.cesguiro.persistence.dao.jpa.entity.BookAuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-
-import java.util.List;
 
 @Mapper
 public interface BookMapper {

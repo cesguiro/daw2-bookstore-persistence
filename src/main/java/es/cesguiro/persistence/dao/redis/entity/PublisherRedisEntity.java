@@ -1,30 +1,23 @@
-package es.cesguiro.persistence.dao.jpa.entity;
+package es.cesguiro.persistence.dao.redis.entity;
 
 import jakarta.persistence.*;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Entity
-@Table(name = "publishers")
-public class PublisherJpaEntity implements Serializable {
+@RedisHash("Publisher")
+public class PublisherRedisEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String slug;
-    @OneToMany(mappedBy = "publisher")
-    private List<BookJpaEntity> books;
 
-    public PublisherJpaEntity() {
+    private List<Long> bookIds;
 
-    }
+    public PublisherRedisEntity() {
 
-    public PublisherJpaEntity(Long id, String name, String slug) {
-        this.id = id;
-        this.name = name;
-        this.slug = slug;
     }
 
     public Long getId() {
@@ -49,5 +42,13 @@ public class PublisherJpaEntity implements Serializable {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    public List<Long> getBookIds() {
+        return bookIds;
+    }
+
+    public void setBookIds(List<Long> bookIds) {
+        this.bookIds = bookIds;
     }
 }

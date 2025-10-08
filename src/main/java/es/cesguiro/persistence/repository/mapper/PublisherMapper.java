@@ -1,4 +1,4 @@
-package es.cesguiro.persistence.dao.jpa.mapper;
+package es.cesguiro.persistence.repository.mapper;
 
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;

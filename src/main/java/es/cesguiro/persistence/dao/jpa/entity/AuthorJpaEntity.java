@@ -1,14 +1,12 @@
 package es.cesguiro.persistence.dao.jpa.entity;
 
 import jakarta.persistence.*;
-import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table(name = "authors")
-@RedisHash("Author")
 public class AuthorJpaEntity implements Serializable {
 
     @Id
@@ -23,8 +21,8 @@ public class AuthorJpaEntity implements Serializable {
     private Integer birthYear;
     private Integer deathYear;
     private String slug;
-    /*@OneToMany(mappedBy = "author")
-    private List<BookAuthorJpaEntity> bookAuthors;*/
+    @OneToMany(mappedBy = "author")
+    private List<BookAuthorJpaEntity> bookAuthors;
 
     public AuthorJpaEntity() {
     }

@@ -3,27 +3,31 @@ package es.cesguiro.persistence.repository;
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.BookRepository;
 import es.cesguiro.domain.repository.entity.BookEntity;
-import es.cesguiro.domain.service.dto.BookDto;
-import es.cesguiro.persistence.dao.BookDao;
+import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
-import es.cesguiro.persistence.dao.jpa.mapper.BookMapper;
 import es.cesguiro.persistence.dao.redis.BookRedisDao;
+import es.cesguiro.persistence.repository.mapper.BookMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class BookRepositoryImpl implements BookRepository {
 
-    private final BookDao bookDao;
+    private final BookJpaDao bookJpaDao;
     private final BookRedisDao bookRedisDao;
 
-    public BookRepositoryImpl(BookDao bookDao, BookRedisDao bookRedisDao) {
-        this.bookDao = bookDao;
+    public BookRepositoryImpl(BookJpaDao bookJpaDao, BookRedisDao bookRedisDao) {
+        this.bookJpaDao = bookJpaDao;
         this.bookRedisDao = bookRedisDao;
     }
 
     @Override
     public Page<BookEntity> findAll(int page, int size) {
-        return bookDao.findAll(page, size);
+        List<BookEntity> content = bookJpaDao.findAll(page, size).stream()
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
+                .toList();
+        long totalElements = bookJpaDao.count();
+        return new Page<>(content, page, size, totalElements);
     }
 
     @Override
@@ -40,7 +44,8 @@ public class BookRepositoryImpl implements BookRepository {
         System.out.println("❌ Cache MISS — buscando en la base de datos");*/
 
         // 2️⃣ Buscar en la base de datos
-        Optional<BookEntity> bookFromDb = bookDao.findByIsbn(isbn);
+        Optional<BookEntity> bookFromDb = bookJpaDao.findByIsbn(isbn)
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity);
 
         // 3️⃣ Si se encuentra en BD, guardar en Redis para la próxima vez
         /*bookFromDb.ifPresent(book -> {
@@ -54,20 +59,21 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public BookEntity save(BookEntity bookEntity) {
-        // Podríamos hacer bookDao.save(bookEntity) y que el DAO se encargue de decidir si es insert o update, con merge o persist, por ejemplo.
+        BookJpaEntity bookJpaEntity = BookMapper.INSTANCE.fromBookEntityToBookJpaEntity(bookEntity);
         if(bookEntity.id() == null) {
-            return bookDao.insert(bookEntity);
+            return BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaDao.insert(bookJpaEntity));
         }
-        return bookDao.update(bookEntity);
+        return BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaDao.update(bookJpaEntity));
     }
 
     @Override
     public Optional<BookEntity> findById(Long id) {
-        return bookDao.findById(id);
+        return bookJpaDao.findById(id)
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity);
     }
 
     @Override
     public void deleteByIsbn(String isbn) {
-        bookDao.deleteByIsbn(isbn);
+        bookJpaDao.deleteByIsbn(isbn);
     }
 }

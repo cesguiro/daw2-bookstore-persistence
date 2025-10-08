@@ -1,11 +1,11 @@
 package es.cesguiro.persistence;
 
-import es.cesguiro.persistence.dao.AuthorDao;
-import es.cesguiro.persistence.dao.BookDao;
-import es.cesguiro.persistence.dao.PublisherDao;
-import es.cesguiro.persistence.dao.jpa.AuthorDaoJpa;
-import es.cesguiro.persistence.dao.jpa.BookDaoJpa;
-import es.cesguiro.persistence.dao.jpa.PublisherDaoJpa;
+import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
+import es.cesguiro.persistence.dao.jpa.BookJpaDao;
+import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
+import es.cesguiro.persistence.dao.jpa.impl.AuthorJpaDaoJpaImpl;
+import es.cesguiro.persistence.dao.jpa.impl.BookJpaDaoJpaImpl;
+import es.cesguiro.persistence.dao.jpa.impl.PublisherJpaDaoJpaImpl;
 import es.cesguiro.persistence.dao.redis.BookRedisDao;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -21,18 +21,18 @@ public class PersistenceConfig {
 
 
     @Bean
-    public PublisherDao publisherDao() {
-        return new PublisherDaoJpa();
+    public PublisherJpaDao publisherJpaDao() {
+        return new PublisherJpaDaoJpaImpl();
     }
 
     @Bean
-    public BookDao bookDao() {
-        return new BookDaoJpa();
+    public BookJpaDao bookJpaDao() {
+        return new BookJpaDaoJpaImpl();
     }
 
     @Bean
-    public AuthorDao authorDao() {
-        return new AuthorDaoJpa();
+    public AuthorJpaDao authorJpaDao() {
+        return new AuthorJpaDaoJpaImpl();
     }
 
 }
