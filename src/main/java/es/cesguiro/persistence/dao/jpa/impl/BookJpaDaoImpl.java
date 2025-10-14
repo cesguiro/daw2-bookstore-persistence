@@ -2,9 +2,7 @@ package es.cesguiro.persistence.dao.jpa.impl;
 
 import es.cesguiro.domain.exception.ResourceNotFoundException;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
-import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
-import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -12,7 +10,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
 
-public class BookJpaDaoJpaImpl implements BookJpaDao {
+public class BookJpaDaoImpl implements BookJpaDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -68,6 +66,17 @@ public class BookJpaDaoJpaImpl implements BookJpaDao {
         String sql = "SELECT b FROM BookJpaEntity b WHERE b.isbn = :isbn";
         try {
             return Optional.of(entityManager.createQuery(sql, BookJpaEntity.class)
+                    .setParameter("isbn", isbn)
+                    .getSingleResult());
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<BookJpaEntity> findByIsbnNative(String isbn) {
+        String sql = "SELECT * FROM books b WHERE b.isbn = :isbn";
+        try {
+            return Optional.of((BookJpaEntity) entityManager.createNativeQuery(sql, BookJpaEntity.class)
                     .setParameter("isbn", isbn)
                     .getSingleResult());
         } catch (Exception e) {

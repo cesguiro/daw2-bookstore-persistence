@@ -11,7 +11,7 @@ import jakarta.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
 
-public class PublisherJpaDaoJpaImpl implements PublisherJpaDao {
+public class PublisherJpaDaoImpl implements PublisherJpaDao {
 
     @PersistenceContext
     private EntityManager entityManager;

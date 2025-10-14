@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -170,4 +171,21 @@ public class BookJpaEntity implements Serializable {
     public void setTitleEs(String titleEs) {
         this.titleEs = titleEs;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BookJpaEntity other)) {
+            return false;
+        }
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
+
 }

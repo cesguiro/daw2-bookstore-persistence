@@ -38,18 +38,6 @@ public class AuthorJpaEntity implements Serializable {
         this.slug = slug;
     }
 
-    /*public List<BookJpaEntity> getBookAuthors() {
-        return bookAuthors.stream().map(BookAuthorJpaEntity::getBook).toList();
-    }
-
-    public void setBookAuthors(List<BookJpaEntity> bookAuthors) {
-        this.bookAuthors.clear();
-        for (BookJpaEntity book : bookAuthors) {
-            BookAuthorJpaEntity bookAuthor = new BookAuthorJpaEntity(book, this);
-            this.bookAuthors.add(bookAuthor);
-        }
-    }*/
-
     public String getBiographyEn() {
         return biographyEn;
     }
@@ -112,5 +100,20 @@ public class AuthorJpaEntity implements Serializable {
 
     public void setSlug(String slug) {
         this.slug = slug;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof AuthorJpaEntity other)) {
+            return false;
+        }
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 }

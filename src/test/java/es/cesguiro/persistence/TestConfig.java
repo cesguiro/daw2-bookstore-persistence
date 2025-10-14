@@ -3,9 +3,9 @@ package es.cesguiro.persistence;
 import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
-import es.cesguiro.persistence.dao.jpa.impl.AuthorJpaDaoJpaImpl;
-import es.cesguiro.persistence.dao.jpa.impl.BookJpaDaoJpaImpl;
-import es.cesguiro.persistence.dao.jpa.impl.PublisherJpaDaoJpaImpl;
+import es.cesguiro.persistence.dao.jpa.impl.AuthorJpaDaoImpl;
+import es.cesguiro.persistence.dao.jpa.impl.BookJpaDaoImpl;
+import es.cesguiro.persistence.dao.jpa.impl.PublisherJpaDaoImpl;
 import jakarta.persistence.EntityManager;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -44,17 +44,17 @@ public class TestConfig {
 
     @Bean
     public PublisherJpaDao publisherJpaDao(EntityManager entityManager) {
-        return new PublisherJpaDaoJpaImpl();
+        return new PublisherJpaDaoImpl();
     }
 
     @Bean
     public BookJpaDao bookJpaDao(EntityManager entityManager) {
-        return new BookJpaDaoJpaImpl();
+        return new BookJpaDaoImpl();
     }
 
     @Bean
     public AuthorJpaDao authorJpaDao(EntityManager entityManager) {
-        return new AuthorJpaDaoJpaImpl();
+        return new AuthorJpaDaoImpl();
     }
 
 

@@ -2,8 +2,12 @@ package es.cesguiro.persistence.repository;
 
 import es.cesguiro.domain.model.Page;
 import es.cesguiro.domain.repository.BookRepository;
+import es.cesguiro.domain.repository.entity.AuthorEntity;
 import es.cesguiro.domain.repository.entity.BookEntity;
+import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
+import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
+import es.cesguiro.persistence.dao.jpa.entity.BookAuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.redis.BookRedisDao;
 import es.cesguiro.persistence.dao.redis.entity.BookRedisEntity;
@@ -15,20 +19,11 @@ import java.util.Optional;
 public class BookRepositoryImpl implements BookRepository {
 
     private final BookJpaDao bookJpaDao;
-    private final BookRedisDao bookRedisDao;
+    /*private final BookRedisDao bookRedisDao;
 
     public BookRepositoryImpl(BookJpaDao bookJpaDao, BookRedisDao bookRedisDao) {
         this.bookJpaDao = bookJpaDao;
         this.bookRedisDao = bookRedisDao;
-    }
-
-    @Override
-    public Page<BookEntity> findAll(int page, int size) {
-        List<BookEntity> content = bookJpaDao.findAll(page, size).stream()
-                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
-                .toList();
-        long totalElements = bookJpaDao.count();
-        return new Page<>(content, page, size, totalElements);
     }
 
     @Override
@@ -56,6 +51,26 @@ public class BookRepositoryImpl implements BookRepository {
 
         // 4️⃣ Devolver mapeado al modelo de dominio
         return bookFromDb;
+    }*/
+
+    public BookRepositoryImpl(BookJpaDao bookJpaDao) {
+        this.bookJpaDao = bookJpaDao;
+    }
+
+    @Override
+    public Page<BookEntity> findAll(int page, int size) {
+        List<BookEntity> content = bookJpaDao.findAll(page, size).stream()
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
+                .toList();
+        long totalElements = bookJpaDao.count();
+        return new Page<>(content, page, size, totalElements);
+    }
+
+
+    @Override
+    public Optional<BookEntity> findByIsbn(String isbn) {
+        return bookJpaDao.findByIsbn(isbn)
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity);
     }
 
     @Override

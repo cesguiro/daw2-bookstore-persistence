@@ -39,7 +39,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class BookJpaDaoJpaImplTest {
+class BookJpaDaoImplTest {
 
     @PersistenceContext
     private EntityManager entityManager;

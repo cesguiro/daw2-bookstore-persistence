@@ -49,4 +49,20 @@ public class BookAuthorJpaEntity {
     public void setAuthor(AuthorJpaEntity author) {
         this.author = author;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof BookAuthorJpaEntity other)) {
+            return false;
+        }
+        return (this.id != null || other.id == null) && (this.id == null || this.id.equals(other.id));
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
+    }
+
 }

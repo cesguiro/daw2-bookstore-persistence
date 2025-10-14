@@ -8,7 +8,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-public class AuthorJpaDaoJpaImpl implements AuthorJpaDao {
+public class AuthorJpaDaoImpl implements AuthorJpaDao {
 
     @PersistenceContext
     private EntityManager entityManager;
