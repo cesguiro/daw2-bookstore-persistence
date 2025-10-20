@@ -16,6 +16,7 @@ public interface BookMapper {
 
     BookMapper INSTANCE = org.mapstruct.factory.Mappers.getMapper(BookMapper.class);
 
+
     @Mapping(target = "publisher", source = "publisher")
     @Mapping(target = "authors", source = "authors")
     BookJpaEntity fromBookEntityToBookJpaEntity(BookEntity bookEntity);
@@ -27,14 +28,4 @@ public interface BookMapper {
     BookEntity fromBookRedisEntityToBookEntity(BookRedisEntity bookRedisEntity);
 
     BookRedisEntity fromBookEntityToBookRedisEntity(BookEntity bookEntity);
-
-    @Mapping(target = "id", ignore = true) // Ignorar el ID para no sobrescribirlo
-    void UpdateBookJpaEntityFromBookEntity(BookEntity bookEntity, @MappingTarget BookJpaEntity bookJpaEntity);
-
-    @AfterMapping
-    default void updateAuthorsOnlyForUpdate(BookEntity bookEntity, @MappingTarget BookJpaEntity bookJpaEntity) {
-        // lógica que solo queremos ejecutar para el update
-        bookJpaEntity.setAuthors(bookEntity.authors().stream()
-                .map(AuthorMapper.INSTANCE::authorEntityToAuthorJpaEntity).collect(Collectors.toList()));
-    }
 }
