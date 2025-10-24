@@ -24,12 +24,12 @@ public class AuthorJpaDaoImpl implements AuthorJpaDao {
     }
 
     @Override
-    public AuthorJpaEntity insert(AuthorJpaEntity authorJpaEntity) {
+    public AuthorJpaEntity insert(AuthorJpaEntity jpaEntity) {
         return null;
     }
 
     @Override
-    public AuthorJpaEntity update(AuthorJpaEntity authorJpaEntity) {
+    public AuthorJpaEntity update(AuthorJpaEntity jpaEntity) {
         return null;
     }
 

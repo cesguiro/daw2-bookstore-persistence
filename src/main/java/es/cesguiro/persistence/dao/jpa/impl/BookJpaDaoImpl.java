@@ -16,20 +16,20 @@ public class BookJpaDaoImpl implements BookJpaDao {
     private EntityManager entityManager;
 
     @Override
-    public BookJpaEntity insert(BookJpaEntity bookJpaEntity) {
-        entityManager.persist(bookJpaEntity);
-        return bookJpaEntity;
+    public BookJpaEntity insert(BookJpaEntity jpaEntity) {
+        entityManager.persist(jpaEntity);
+        return jpaEntity;
     }
 
     @Override
-    public BookJpaEntity update(BookJpaEntity bookJpaEntity) {
-        BookJpaEntity managed = entityManager.find(BookJpaEntity.class, bookJpaEntity.getId());
+    public BookJpaEntity update(BookJpaEntity jpaEntity) {
+        BookJpaEntity managed = entityManager.find(BookJpaEntity.class, jpaEntity.getId());
         if(managed == null) {
-            throw new ResourceNotFoundException("Book with id " + bookJpaEntity.getId() + " not found");
+            throw new ResourceNotFoundException("Book with id " + jpaEntity.getId() + " not found");
         }
         managed.getBookAuthors().clear();
         entityManager.flush();
-        return entityManager.merge(bookJpaEntity);
+        return entityManager.merge(jpaEntity);
     }
 
     @Override

@@ -5,6 +5,7 @@ import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.repository.mapper.PublisherMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PublisherRepositoryImpl implements PublisherRepository {
@@ -30,5 +31,12 @@ public class PublisherRepositoryImpl implements PublisherRepository {
     @Override
     public PublisherEntity save(PublisherEntity publisherEntity) {
         return null;
+    }
+
+    public List<PublisherEntity> findAll(int page, int size) {
+        return publisherDao.findAll(page, size)
+                .stream()
+                .map(PublisherMapper.INSTANCE::publisherJpaEntityToPublisherEntity)
+                .toList();
     }
 }

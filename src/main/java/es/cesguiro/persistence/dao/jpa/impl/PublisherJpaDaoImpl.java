@@ -40,12 +40,12 @@ public class PublisherJpaDaoImpl implements PublisherJpaDao {
     }
 
     @Override
-    public PublisherJpaEntity insert(PublisherJpaEntity publisherJpaEntity) {
+    public PublisherJpaEntity insert(PublisherJpaEntity jpaEntity) {
         return null;
     }
 
     @Override
-    public PublisherJpaEntity update(PublisherJpaEntity publisherJpaEntity) {
+    public PublisherJpaEntity update(PublisherJpaEntity jpaEntity) {
         return null;
     }
 
