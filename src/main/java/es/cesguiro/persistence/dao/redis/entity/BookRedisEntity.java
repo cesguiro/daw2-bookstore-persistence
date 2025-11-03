@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisHash;
 import org.springframework.data.redis.core.index.Indexed;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @RedisHash("Book")
@@ -18,8 +19,8 @@ public class BookRedisEntity implements Serializable {
     private String titleEn;
     private String synopsisEs;
     private String synopsisEn;
-    private Double basePrice;
-    private Double discountPercentage;
+    private BigDecimal basePrice;
+    private BigDecimal discountPercentage;
     private String cover;
     private String publicationDate;
 
@@ -77,19 +78,19 @@ public class BookRedisEntity implements Serializable {
         this.synopsisEn = synopsisEn;
     }
 
-    public Double getBasePrice() {
+    public BigDecimal getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(Double basePrice) {
+    public void setBasePrice(BigDecimal basePrice) {
         this.basePrice = basePrice;
     }
 
-    public Double getDiscountPercentage() {
+    public BigDecimal getDiscountPercentage() {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(Double discountPercentage) {
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 

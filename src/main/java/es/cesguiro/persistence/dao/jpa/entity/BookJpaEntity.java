@@ -28,7 +28,7 @@ public class BookJpaEntity implements Serializable {
     @Column(name = "base_price")
     private BigDecimal basePrice;
     @Column(name = "discount_percentage")
-    private Double discountPercentage;
+    private BigDecimal discountPercentage;
     private String cover;
     @Column(name = "publication_date")
     private String publicationDate;
@@ -48,7 +48,7 @@ public class BookJpaEntity implements Serializable {
     public BookJpaEntity() {
     }
 
-    public BookJpaEntity(Long id, String isbn, String titleEs, String titleEn, String synopsisEs, String synopsisEn, BigDecimal basePrice, Double discountPercentage, String cover, String publicationDate, PublisherJpaEntity publisher, List<AuthorJpaEntity> authors) {
+    public BookJpaEntity(Long id, String isbn, String titleEs, String titleEn, String synopsisEs, String synopsisEn, BigDecimal basePrice, BigDecimal discountPercentage, String cover, String publicationDate, PublisherJpaEntity publisher, List<AuthorJpaEntity> authors) {
         this.id = id;
         this.isbn = isbn;
         this.titleEs = titleEs;
@@ -100,11 +100,11 @@ public class BookJpaEntity implements Serializable {
         this.cover = cover;
     }
 
-    public Double getDiscountPercentage() {
+    public BigDecimal getDiscountPercentage() {
         return discountPercentage;
     }
 
-    public void setDiscountPercentage(Double discountPercentage) {
+    public void setDiscountPercentage(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 

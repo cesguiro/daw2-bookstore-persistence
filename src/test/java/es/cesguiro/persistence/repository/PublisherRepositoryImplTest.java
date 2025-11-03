@@ -1,12 +1,10 @@
 package es.cesguiro.persistence.repository;
 
-import es.cesguiro.data.loader.PublishersDataLoader;
+
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
-import es.cesguiro.persistence.dao.jpa.impl.PublisherJpaDaoImpl;
-import es.cesguiro.persistence.repository.mapper.PublisherMapper;
-import org.junit.jupiter.api.BeforeAll;
+import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,23 +28,13 @@ class PublisherRepositoryImplTest {
     @InjectMocks
     private PublisherRepositoryImpl publisherRepositoryImpl;
 
-    private static List<PublisherEntity> publisherEntities;
-
-    @BeforeAll
-    static void setUp() {
-        PublishersDataLoader publishersDataLoader = new PublishersDataLoader();
-        publisherEntities = publishersDataLoader.loadPublisherEntitiesFromCSV();
-    }
-
     @Test
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
     void testFindBySlug() {
         String slug = "editorial-sudamericana";
-        PublisherEntity expected = new PublisherEntity(
-                1L,
-                "Editorial Sudamericana",
-                slug
-        );
+        PublisherEntity expected = Instancio.of()
+                .set(field -> field.slug(), slug)
+                .create();
 
         PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity(
                 1L,

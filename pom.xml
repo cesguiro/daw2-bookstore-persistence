@@ -46,7 +46,7 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <org.spring.boot.version>3.5.6</org.spring.boot.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
-        <!--<jakarta.data-api.version>1.0.1</jakarta.data-api.version>-->
+        <org.instancio.version>5.5.1</org.instancio.version>
     </properties>
 
 	<dependencies>
@@ -100,6 +100,12 @@
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${org.flywaydb.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.instancio</groupId>
+            <artifactId>instancio-junit</artifactId>
+            <version>${org.instancio.version}</version>
             <scope>test</scope>
         </dependency>
 	</dependencies>
