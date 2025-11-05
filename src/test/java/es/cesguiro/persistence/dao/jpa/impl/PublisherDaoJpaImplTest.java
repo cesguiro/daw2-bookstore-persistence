@@ -1,6 +1,7 @@
-package es.cesguiro.persistence.dao.jpa;
+package es.cesguiro.persistence.dao.jpa.impl;
 
 import es.cesguiro.persistence.TestConfig;
+import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;

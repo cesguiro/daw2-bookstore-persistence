@@ -121,25 +121,34 @@ INSERT INTO orders (user_id, order_date, status, total) VALUES
 INSERT INTO orders (user_id, order_date, delivery_date, status, total) VALUES
     (2, '2025-01-18', '2025-01-19', 1, 45.99); -- user1
 
+-- Guardar el ID insertado en una variable
+SET @order1_id = (SELECT MAX(id) FROM orders);
+
+
 -- Detalle del pedido de user1 (ejemplo con dos libros)
 INSERT INTO order_details (order_id, book_id, quantity, price) VALUES
-                                                                   (LAST_INSERT_ID(), 1, 1, 15.99),
-                                                                   (LAST_INSERT_ID(), 2, 2, 15.00);
+                                                                   (@order1_id, 1, 1, 15.99),
+                                                                   (@order1_id, 2, 2, 15.00);
 
 -- Pedido de user3
 INSERT INTO orders (user_id, order_date, delivery_date, status, total) VALUES
     (4, '2025-01-17', '2025-01-20', 2, 39.99);
 
+
+SET @order2_id = (SELECT MAX(id) FROM orders);
+
 -- Detalle del pedido de user3 (ejemplo con un libro)
 INSERT INTO order_details (order_id, book_id, quantity, price) VALUES
-    (LAST_INSERT_ID(), 3, 1, 19.99);
+    (@order2_id, 3, 1, 19.99);
 
 -- Pedido de user5
 INSERT INTO orders (user_id, order_date, delivery_date, status, total) VALUES
     (6, '2025-01-16', '2025-01-18', 4, 29.99); -- user5
 
+SET @order3_id = (SELECT MAX(id) FROM orders);
+
 -- Detalle del pedido de user5 (ejemplo con un libro)
 INSERT INTO order_details (order_id, book_id, quantity, price) VALUES
-    (LAST_INSERT_ID(), 4, 1, 14.99);
+    (@order3_id, 4, 1, 14.99);
 
 

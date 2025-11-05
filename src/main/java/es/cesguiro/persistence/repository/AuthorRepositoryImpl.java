@@ -17,7 +17,13 @@ public class AuthorRepositoryImpl implements AuthorRepository {
 
     @Override
     public AuthorEntity save(AuthorEntity authorEntity) {
-        return null;
+        return AuthorMapper.INSTANCE
+                .authorJpaEntityToAuthorEntity(
+                        authorJpaDao.insert(
+                                AuthorMapper.INSTANCE
+                                        .authorEntityToAuthorJpaEntity(authorEntity)
+                        )
+                );
     }
 
     @Override

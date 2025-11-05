@@ -41,33 +41,32 @@ class PublisherRepositoryImplTest {
                 .create();
         when(publisherDao.findBySlug(any())).thenReturn(Optional.of(publisherJpaEntity));
 
-        Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug(publisherJpaEntity.getSlug());
+        Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug("some-slug");
         assertAll(
                 () -> assertTrue(result.isPresent()),
-                () -> assertEquals(expected.name(), result.get().name()),
-                () -> assertEquals(expected.slug(), result.get().slug())
+                () -> assertEquals(expected.name(), result.get().name(), "Names should match"),
+                () -> assertEquals(expected.slug(), result.get().slug(), "Slugs should match")
         );
     }
 
     @Test
     @DisplayName("Test findBySlug method returns Optional.empty()")
     void testFindBySlugEmpty() {
-        String slug = "non-existent-slug";
-        when(publisherDao.findBySlug(slug)).thenReturn(Optional.empty());
-        assertTrue(publisherRepositoryImpl.findBySlug(slug).isEmpty());
+        when(publisherDao.findBySlug(any())).thenReturn(Optional.empty());
+        assertTrue(publisherRepositoryImpl.findBySlug("non-existing-slug").isEmpty());
     }
 
     @Test
     @DisplayName("Test findAll method returns list of PublisherEntity")
     void testFindAll() {
-         List<PublisherJpaEntity> jpaEntities = List.of(
-                 new PublisherJpaEntity(1L, "Editorial Sudamericana", "editorial-sudamericana"),
-                 new PublisherJpaEntity(2L, "Penguin Random House", "penguin-random-house")
-         );
-         List<PublisherEntity> expected = List.of(
-                 new PublisherEntity(1L, "Editorial Sudamericana", "editorial-sudamericana"),
-                 new PublisherEntity(2L, "Penguin Random House", "penguin-random-house")
-         );
+         List<PublisherJpaEntity> jpaEntities = Instancio.ofList(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
+                .size(2)
+                .withSeed(20)
+                .create();
+         List<PublisherEntity> expected = Instancio.ofList(InstancioModel.PUBLISHER_ENTITY_MODEL)
+                .size(2)
+                .withSeed(20)
+                .create();
 
 
         when(publisherDao.findAll(0, 10)).thenReturn(jpaEntities);
@@ -76,9 +75,11 @@ class PublisherRepositoryImplTest {
 
         assertAll(
                 () -> assertNotNull(result),
-                () -> assertEquals(expected.size(), result.size()),
-                () -> assertEquals(expected.getFirst().name(), result.getFirst().name()),
-                () -> assertEquals(expected.get(1).slug(), result.get(1).slug())
+                () -> assertEquals(expected.size(), result.size(), "List sizes should match"),
+                () -> assertEquals(expected.getFirst().name(), result.getFirst().name(), "First entity names should match"),
+                () -> assertEquals(expected.getFirst().slug(), result.getFirst().slug(), "First entity slugs should match"),
+                () -> assertEquals(expected.getLast().name(), result.getLast().name(), "Last entity names should match"),
+                () -> assertEquals(expected.getLast().slug(), result.getLast().slug(), "Last entity slugs should match")
         );
     }
 }

@@ -1,6 +1,9 @@
-package es.cesguiro.persistence.dao.jpa;
+package es.cesguiro.persistence.dao.jpa.impl;
 
 import es.cesguiro.persistence.TestConfig;
+import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
+import es.cesguiro.persistence.dao.jpa.BookJpaDao;
+import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -65,7 +68,7 @@ class BookJpaDaoImplTest {
                 BigDecimal.valueOf(29.99),
                  BigDecimal.valueOf(5.00),
                 "new_book_cover.jpg",
-                LocalDate.of(2024, 1, 1).toString(),
+                LocalDate.of(2024, 1, 1),
                 publisherJpaEntity, // Assuming the first publisher exists
                 List.of(authorJpaEntity1, authorJpaEntity2) // Assuming the first two authors exist
         );

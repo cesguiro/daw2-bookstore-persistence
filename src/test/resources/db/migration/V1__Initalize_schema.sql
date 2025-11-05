@@ -20,9 +20,11 @@ CREATE TABLE books (
                        cover VARCHAR(255),
                        publication_date DATE,
                        publisher_id INT NOT NULL,
-                       FOREIGN KEY (publisher_id) REFERENCES publishers(id),
-                       INDEX idx_books_publisher (publisher_id)
+                       FOREIGN KEY (publisher_id) REFERENCES publishers(id)
 );
+
+
+CREATE INDEX idx_books_publisher ON books(publisher_id);
 
 CREATE TABLE authors (
                          id INT PRIMARY KEY AUTO_INCREMENT,
@@ -57,10 +59,11 @@ CREATE TABLE book_author (
                              author_id INT NOT NULL,
                              FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE,
                              FOREIGN KEY (author_id) REFERENCES authors(id) ON DELETE CASCADE,
-                             UNIQUE KEY uq_book_author (book_id, author_id),
-                             INDEX idx_book_author_book (book_id),
-                             INDEX idx_book_author_author (author_id)
+                             CONSTRAINT uq_book_author UNIQUE (book_id, author_id)
 );
+
+CREATE INDEX idx_book_author_book ON book_author(book_id);
+CREATE INDEX idx_book_author_author ON book_author(author_id);
 
 -- ===========================
 -- TABLAS DE REVIEWS Y PEDIDOS
@@ -73,9 +76,10 @@ CREATE TABLE orders (
                         delivery_date DATETIME,
                         status INT NOT NULL DEFAULT 0, -- 0: shopping cart, 1: ordered, 2: in process, 3: sent, 4: received
                         total DECIMAL(10, 2),
-                        FOREIGN KEY (user_id) REFERENCES users(id),
-                        INDEX idx_orders_user (user_id)
+                        FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+CREATE INDEX idx_orders_user ON orders(user_id);
 
 CREATE TABLE order_details (
                                id INT PRIMARY KEY AUTO_INCREMENT,
@@ -85,7 +89,8 @@ CREATE TABLE order_details (
                                price DECIMAL(10, 2) NOT NULL,
                                FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
                                FOREIGN KEY (book_id) REFERENCES books(id),
-                               UNIQUE KEY uq_order_book (order_id, book_id),
-                               INDEX idx_order_details_order (order_id),
-                               INDEX idx_order_details_book (book_id)
+                               CONSTRAINT uq_order_book UNIQUE (order_id, book_id)
 );
+
+CREATE INDEX idx_order_details_order ON order_details(order_id);
+CREATE INDEX idx_order_details_book ON order_details(book_id);

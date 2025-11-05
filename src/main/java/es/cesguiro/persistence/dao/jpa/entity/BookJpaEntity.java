@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public class BookJpaEntity implements Serializable {
     private BigDecimal discountPercentage;
     private String cover;
     @Column(name = "publication_date")
-    private String publicationDate;
+    private LocalDate publicationDate;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private PublisherJpaEntity publisher;
@@ -48,7 +49,7 @@ public class BookJpaEntity implements Serializable {
     public BookJpaEntity() {
     }
 
-    public BookJpaEntity(Long id, String isbn, String titleEs, String titleEn, String synopsisEs, String synopsisEn, BigDecimal basePrice, BigDecimal discountPercentage, String cover, String publicationDate, PublisherJpaEntity publisher, List<AuthorJpaEntity> authors) {
+    public BookJpaEntity(Long id, String isbn, String titleEs, String titleEn, String synopsisEs, String synopsisEn, BigDecimal basePrice, BigDecimal discountPercentage, String cover, LocalDate publicationDate, PublisherJpaEntity publisher, List<AuthorJpaEntity> authors) {
         this.id = id;
         this.isbn = isbn;
         this.titleEs = titleEs;
@@ -124,11 +125,11 @@ public class BookJpaEntity implements Serializable {
         this.isbn = isbn;
     }
 
-    public String getPublicationDate() {
+    public LocalDate getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(String publicationDate) {
+    public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
 
