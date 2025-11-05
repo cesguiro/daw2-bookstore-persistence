@@ -17,6 +17,11 @@ public class PublisherRepositoryImpl implements PublisherRepository {
     }
 
     @Override
+    public List<PublisherEntity> findAll() {
+        return List.of();
+    }
+
+    @Override
     public Optional<PublisherEntity> findById(Long id) {
         return publisherDao.findById(id)
                 .map(PublisherMapper.INSTANCE::publisherJpaEntityToPublisherEntity);

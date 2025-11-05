@@ -1,26 +1,13 @@
 package es.cesguiro.persistence.dao.jpa;
 
-import es.cesguiro.data.loader.AuthorsDataLoader;
-import es.cesguiro.data.loader.BooksDataLoader;
-import es.cesguiro.data.loader.PublishersDataLoader;
-import es.cesguiro.domain.repository.entity.AuthorEntity;
-import es.cesguiro.domain.repository.entity.BookEntity;
-import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.TestConfig;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
-import es.cesguiro.persistence.repository.mapper.AuthorMapper;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,11 +15,9 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -78,7 +63,7 @@ class BookJpaDaoImplTest {
                 "New Book Synopsis ES",
                 "New Book Synopsis EN",
                 BigDecimal.valueOf(29.99),
-                10.0,
+                 BigDecimal.valueOf(5.00),
                 "new_book_cover.jpg",
                 LocalDate.of(2024, 1, 1).toString(),
                 publisherJpaEntity, // Assuming the first publisher exists

@@ -4,6 +4,7 @@ package es.cesguiro.persistence.repository;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
+import es.cesguiro.persistence.util.InstancioModel;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
+import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -31,23 +33,15 @@ class PublisherRepositoryImplTest {
     @Test
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
     void testFindBySlug() {
-        String slug = "editorial-sudamericana";
-        PublisherEntity expected = Instancio.of()
-                .set(field -> field.slug(), slug)
+        PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
+                .withSeed(10)
                 .create();
+        PublisherEntity expected = Instancio.of(InstancioModel.PUBLISHER_ENTITY_MODEL)
+                .withSeed(10)
+                .create();
+        when(publisherDao.findBySlug(any())).thenReturn(Optional.of(publisherJpaEntity));
 
-        PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity(
-                1L,
-                "Editorial Sudamericana",
-                slug
-        );
-
-        //PublisherEntity expected = publisherEntities.getFirst();
-        //PublisherJpaEntity jpaEntity = PublisherMapper.INSTANCE.publisherEntityToPublisherJpaEntity(expected);
-        //when(publisherDao.findBySlug(slug)).thenReturn(Optional.of(jpaEntity));
-        when(publisherDao.findBySlug(slug)).thenReturn(Optional.of(publisherJpaEntity));
-
-        Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug(slug);
+        Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug(publisherJpaEntity.getSlug());
         assertAll(
                 () -> assertTrue(result.isPresent()),
                 () -> assertEquals(expected.name(), result.get().name()),

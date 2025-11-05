@@ -25,4 +25,9 @@ public class AuthorRepositoryImpl implements AuthorRepository {
         return authorJpaDao.findById(id)
                 .map(AuthorMapper.INSTANCE::authorJpaEntityToAuthorEntity);
     }
+
+    @Override
+    public Optional<AuthorEntity> findBySlug(String s) {
+        return Optional.empty();
+    }
 }
