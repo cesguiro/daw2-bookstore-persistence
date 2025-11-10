@@ -86,6 +86,9 @@ public class BookJpaDaoImpl implements BookJpaDao {
 
     @Override
     public void deleteByIsbn(String isbn) {
+        /*BookJpaEntity managed = findByIsbn(isbn)
+                .orElseThrow(() -> new ResourceNotFoundException("Book with ISBN " + isbn + " not found"));
+        entityManager.remove(managed);*/
         entityManager.createQuery("DELETE FROM BookJpaEntity b WHERE b.isbn = :isbn")
                 .setParameter("isbn", isbn)
                 .executeUpdate();

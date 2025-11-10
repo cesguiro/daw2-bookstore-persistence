@@ -25,7 +25,8 @@ public class AuthorJpaDaoImpl implements AuthorJpaDao {
 
     @Override
     public AuthorJpaEntity insert(AuthorJpaEntity jpaEntity) {
-        return null;
+        entityManager.persist(jpaEntity);
+        return jpaEntity;
     }
 
     @Override
