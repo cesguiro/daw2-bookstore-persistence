@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,8 +33,17 @@ class AuthorJpaDaoImplTest {
         AuthorJpaEntity newAuthor = Instancio.of(InstancioModel.AUTHOR_JPA_ENTITY_MODEL)
                 .set(field(AuthorJpaEntity::getId), null)
                 .create();
-        AuthorJpaEntity authorSaved = authorJpaDao.insert(newAuthor);
-        assertNotNull(authorSaved.getId(), "Author ID should not be null after insertion");
+        AuthorJpaEntity result = authorJpaDao.insert(newAuthor);
+
+        assertThat(result)
+                .isNotNull()
+                .extracting(AuthorJpaEntity::getId)
+                .isNotNull();
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(newAuthor);
+
     }
 
 }

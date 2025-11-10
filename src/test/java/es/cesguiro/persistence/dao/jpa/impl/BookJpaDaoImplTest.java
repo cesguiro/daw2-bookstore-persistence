@@ -7,8 +7,10 @@ import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
+import es.cesguiro.persistence.util.InstancioModel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +18,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.instancio.Select.field;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
@@ -45,70 +45,45 @@ class BookJpaDaoImplTest {
     @Test
     @DisplayName("Test insert method persists BookJpaEntity")
     void testInsert() {
-        PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
-        publisherJpaEntity.setName("Editorial X");
-        publisherJpaEntity.setSlug("editorial-x");
+        PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
+                .ignore(field(PublisherJpaEntity::getId))
+                .create();
         entityManager.persist(publisherJpaEntity);
 
-        AuthorJpaEntity authorJpaEntity1 = new AuthorJpaEntity();
-        authorJpaEntity1.setName("Author One");
-        entityManager.persist(authorJpaEntity1);
-        AuthorJpaEntity authorJpaEntity2 = new AuthorJpaEntity();
-        authorJpaEntity2.setName("Author Two");
-        entityManager.persist(authorJpaEntity2);
+        List<AuthorJpaEntity> authorJpaEntities =Instancio.ofList(InstancioModel.AUTHOR_JPA_ENTITY_MODEL)
+                .size(2)
+                .ignore(field(AuthorJpaEntity::getId))
+                .create();
+        authorJpaEntities.forEach(entityManager::persist);
 
+        BookJpaEntity newBook = Instancio.of(InstancioModel.BOOK_JPA_ENTITY_MODEL)
+                .ignore(field(BookJpaEntity::getId))
+                .set(field(BookJpaEntity::getPublisher), publisherJpaEntity)
+                .lenient()
+                .create();
 
-        BookJpaEntity newBook = new BookJpaEntity(
-                null,
-                "666666666666",
-                "New Book Title ES",
-                "New Book Title EN",
-                "New Book Synopsis ES",
-                "New Book Synopsis EN",
-                BigDecimal.valueOf(29.99),
-                 BigDecimal.valueOf(5.00),
-                "new_book_cover.jpg",
-                LocalDate.of(2024, 1, 1),
-                publisherJpaEntity, // Assuming the first publisher exists
-                List.of(authorJpaEntity1, authorJpaEntity2) // Assuming the first two authors exist
-        );
+        newBook.setAuthors(authorJpaEntities);
 
-        String sql = "SELECT COUNT(b) FROM BookJpaEntity b";
-        long countBefore = entityManager.createQuery(sql, Long.class)
-                .getSingleResult();
-
+        long countBefore = bookJpaDao.count();
         BookJpaEntity result = bookJpaDao.insert(newBook);
+        long countAfter = bookJpaDao.count();
 
-        long countAfter = entityManager.createQuery(sql, Long.class)
-                .getSingleResult();
-
-        long lastId = entityManager.createQuery("SELECT MAX(b.id) FROM BookJpaEntity b", Long.class)
-                .getSingleResult();
-
-        Set<Long> expectedAuthorIds = newBook.getAuthors().stream()
-                .map(AuthorJpaEntity::getId)
-                .collect(Collectors.toSet());
-        Set<Long> resultAuthorIds = result.getAuthors().stream()
-                .map(AuthorJpaEntity::getId)
-                .collect(Collectors.toSet());
-
-        assertAll(
-                () -> assertNotNull(result),
-                () -> assertEquals(lastId, result.getId()),
-                () -> assertEquals(newBook.getIsbn(), result.getIsbn()),
-                () -> assertEquals(newBook.getTitleEs(), result.getTitleEs()),
-                () -> assertEquals(newBook.getTitleEn(), result.getTitleEn()),
-                () -> assertEquals(newBook.getSynopsisEs(), result.getSynopsisEs()),
-                () -> assertEquals(newBook.getSynopsisEn(), result.getSynopsisEn()),
-                () -> assertEquals(newBook.getBasePrice(), result.getBasePrice()),
-                () -> assertEquals(newBook.getDiscountPercentage(), result.getDiscountPercentage()),
-                () -> assertEquals(newBook.getCover(), result.getCover()),
-                () -> assertEquals(newBook.getPublicationDate(), result.getPublicationDate()),
-                () -> assertEquals(newBook.getPublisher().getId(), result.getPublisher().getId()),
-                () -> assertEquals(newBook.getAuthors().size(), result.getAuthors().size()),
-                () -> assertEquals(expectedAuthorIds, resultAuthorIds),
-                () -> assertEquals(countBefore + 1, countAfter)
-        );
+        assertThat(result)
+                .isNotNull()
+                .extracting(BookJpaEntity::getId)
+                .isNotNull();
+        assertThat(result)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(newBook);
+        assertThat(result.getAuthors())
+                .extracting(AuthorJpaEntity::getId)
+                .containsExactlyInAnyOrderElementsOf(
+                        authorJpaEntities.stream()
+                                .map(AuthorJpaEntity::getId)
+                                .collect(Collectors.toSet())
+                );
+        assertThat(countAfter).isEqualTo(countBefore + 1);
     }
 
     /*@ParameterizedTest

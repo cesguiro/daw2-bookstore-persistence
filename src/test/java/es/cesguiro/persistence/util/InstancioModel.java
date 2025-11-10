@@ -49,6 +49,8 @@ public class InstancioModel {
 
     public static Model<List<AuthorEntity>> AUTHOR_ENTITY_LIST_MODEL = Instancio.ofList(AUTHOR_ENTITY_MODEL)
             .toModel();
+    public static Model<List<AuthorJpaEntity>> AUTHOR_JPA_ENTITY_LIST_MODEL = Instancio.ofList(AUTHOR_JPA_ENTITY_MODEL)
+            .toModel();
 
     /*******************************************************************************
      * Modelos de BookAuthor

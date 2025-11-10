@@ -1,6 +1,5 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.TestConfig;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -15,8 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
@@ -52,33 +50,22 @@ class PublisherDaoJpaImplTest {
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
     void testFindBySlug() {
         String slug = "harpercollins";
-        //Optional<PublisherJpaEntity> expected = Optional.of(new PublisherJpaEntity(4L, "HarperCollins", slug));
+
         Optional<PublisherJpaEntity> result = publisherDao.findBySlug(slug);
 
         assertThat(result)
-                .isPresent()
-                .get()
-                .extracting(PublisherJpaEntity::getSlug, PublisherJpaEntity::getName)
-                .containsExactly(slug, "HarperCollins")
-        ;
-        /*assertAll(
-                () -> assertTrue(result.isPresent()),
-                () -> assertEquals(expected.get().getId(), result.get().getId()),
-                () -> assertEquals(expected.get().getSlug(), result.get().getSlug()),
-                () -> assertEquals(expected.get().getName(), result.get().getName())
-        );*/
+                .hasValueSatisfying(publisher -> assertThat(publisher)
+                        .extracting(PublisherJpaEntity::getSlug, PublisherJpaEntity::getName)
+                        .containsExactly(slug, "HarperCollins")
+                );
     }
 
-    /*@Test
-    @DisplayName("Test findBySlugCb methor returns Optional<PublisherEntity>")
+    @Test
+    @DisplayName("Test findBySlug method with non-existing slug")
     void testFindBySlugCb() {
-        PublisherEntity expected = publisherEntities.getFirst();
-        Optional<PublisherEntity> result = publisherDao.findBySlug(expected.slug());
-        assertAll(
-                () -> assertTrue(result.isPresent()),
-                () -> assertEquals(expected.id(), result.get().id()),
-                () -> assertEquals(expected.slug(), result.get().slug()),
-                () -> assertEquals(expected.name(), result.get().name())
-        );
-    }*/
+        String slug = "non-existing-slug";
+        Optional<PublisherJpaEntity> result = publisherDao.findBySlug(slug);
+
+        assertThat(result).isNotPresent();
+    }
 }

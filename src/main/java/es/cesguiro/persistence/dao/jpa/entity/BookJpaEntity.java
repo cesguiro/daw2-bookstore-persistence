@@ -82,7 +82,6 @@ public class BookJpaEntity implements Serializable {
             BookAuthorJpaEntity bookAuthor = new BookAuthorJpaEntity(this, author);
             this.bookAuthors.add(bookAuthor);
         }
-
     }
 
     public BigDecimal getBasePrice() {
