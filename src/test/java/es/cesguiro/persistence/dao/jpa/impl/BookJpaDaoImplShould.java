@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
 
 import static java.time.LocalTime.now;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatException;
 import static org.instancio.Select.field;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
@@ -48,7 +50,6 @@ class BookJpaDaoImplShould {
 
 
     @Test
-    @DisplayName("Test insert method persists BookJpaEntity")
     void insert_book_when_data_is_correct() {
         PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
                 .ignore(field(PublisherJpaEntity::getId))
@@ -113,4 +114,5 @@ class BookJpaDaoImplShould {
                 .isEqualTo(bookToUpdate);
 
     }
+
 }

@@ -1,8 +1,12 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import com.github.database.rider.core.api.configuration.DBUnit;
+import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+
+/*import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.configuration.Orthography;
-import com.github.database.rider.junit5.api.DBRider;
+import com.github.database.rider.junit5.api.DBRider;*/
 import es.cesguiro.persistence.TestConfig;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -23,9 +27,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
 //AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@DBRider
+/*@DBRider
 @DBUnit(caseSensitiveTableNames = true,
-caseInsensitiveStrategy = Orthography.LOWERCASE)
+caseInsensitiveStrategy = Orthography.LOWERCASE)*/
 class PublisherDaoJpaImplShould {
 
     /*@PersistenceContext

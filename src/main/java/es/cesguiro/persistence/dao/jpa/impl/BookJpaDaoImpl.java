@@ -93,4 +93,5 @@ public class BookJpaDaoImpl implements BookJpaDao {
                 .setParameter("isbn", isbn)
                 .executeUpdate();
     }
+
 }
