@@ -47,6 +47,7 @@
         <org.spring.boot.version>3.5.6</org.spring.boot.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
         <org.instancio.version>5.5.1</org.instancio.version>
+        <com.github.database-rider.version>1.44.0</com.github.database-rider.version>
     </properties>
 
 	<dependencies>
@@ -106,6 +107,18 @@
             <groupId>org.instancio</groupId>
             <artifactId>instancio-junit</artifactId>
             <version>${org.instancio.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-core</artifactId>
+            <version>${com.github.database-rider.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.database-rider</groupId>
+            <artifactId>rider-junit5</artifactId>
+            <version>${com.github.database-rider.version}</version>
             <scope>test</scope>
         </dependency>
 	</dependencies>

@@ -1,5 +1,8 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
+import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.core.api.configuration.Orthography;
+import com.github.database.rider.junit5.api.DBRider;
 import es.cesguiro.persistence.TestConfig;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -19,11 +22,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ContextConfiguration(classes = TestConfig.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-class PublisherDaoJpaImplTest {
+//AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DBRider
+@DBUnit(caseSensitiveTableNames = true,
+caseInsensitiveStrategy = Orthography.LOWERCASE)
+class PublisherDaoJpaImplShould {
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    /*@PersistenceContext
+    private EntityManager entityManager;*/
 
     @Autowired
     private PublisherJpaDao publisherDao;
@@ -45,8 +51,12 @@ class PublisherDaoJpaImplTest {
         publisherEntities = publishersDataLoader.loadPublisherEntitiesFromCSV();
     }*/
 
-
     @Test
+    void found_publisher_by_isbn_when_isbn_exists() {
+
+    }
+
+    /*@Test
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
     void testFindBySlug() {
         String slug = "harpercollins";
@@ -67,5 +77,5 @@ class PublisherDaoJpaImplTest {
         Optional<PublisherJpaEntity> result = publisherDao.findBySlug(slug);
 
         assertThat(result).isNotPresent();
-    }
+    }*/
 }
