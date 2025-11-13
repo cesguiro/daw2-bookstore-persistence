@@ -1,6 +1,15 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
+import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.core.api.configuration.Orthography;
+import com.github.database.rider.core.api.connection.ConnectionHolder;
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.core.connection.RiderDataSource;
+import com.github.database.rider.junit5.api.DBRider;
+import com.github.database.rider.junit5.util.EntityManagerProvider;
+import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,21 +28,21 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ContextConfiguration;
 
+import javax.sql.DataSource;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-@DataJpaTest
-@ContextConfiguration(classes = TestConfig.class)
-//AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-/*@DBRider
-@DBUnit(caseSensitiveTableNames = true,
-caseInsensitiveStrategy = Orthography.LOWERCASE)*/
+@DaoTest
 class PublisherDaoJpaImplShould {
 
     /*@PersistenceContext
     private EntityManager entityManager;*/
+
+
+    private ConnectionHolder connectionHolder = () ->
+            EntityManagerProvider.instance("junit5-pu").clear().connection();
 
     @Autowired
     private PublisherJpaDao publisherDao;
@@ -47,17 +56,13 @@ class PublisherDaoJpaImplShould {
         flyway.migrate();
     }*/
 
-    /*private static List<PublisherEntity> publisherEntities;
 
-    @BeforeAll
-    static void setUp() {
-        PublishersDataLoader publishersDataLoader = new PublishersDataLoader();
-        publisherEntities = publishersDataLoader.loadPublisherEntitiesFromCSV();
-    }*/
 
     @Test
-    void found_publisher_by_isbn_when_isbn_exists() {
-
+    @DataSet(value="adapters/data/publisher.json")
+    void found_publisher_by_slug_when_slug_exists() {
+        Optional<PublisherJpaEntity> actual =  publisherDao.findBySlug("publisher-name");
+        assertThat(actual).isNotEmpty();
     }
 
     /*@Test

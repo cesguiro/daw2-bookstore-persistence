@@ -85,12 +85,12 @@
             <version>${org.spring.boot.version}</version>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-csv</artifactId>
             <version>${org.apache.commons.csv.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
@@ -114,13 +114,13 @@
             <artifactId>rider-core</artifactId>
             <version>${com.github.database-rider.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.github.database-rider</groupId>
             <artifactId>rider-junit5</artifactId>
             <version>${com.github.database-rider.version}</version>
             <scope>test</scope>
-        </dependency>-->
+        </dependency>
 	</dependencies>
 
 	<build>
