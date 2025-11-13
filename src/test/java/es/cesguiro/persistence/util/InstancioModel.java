@@ -34,7 +34,7 @@ public class InstancioModel {
             .toModel();
     public static final Model<PublisherJpaEntity> PUBLISHER_JPA_ENTITY_MODEL = Instancio.of(PublisherJpaEntity.class)
             .generate(field(PublisherJpaEntity.class, "slug"), gen -> gen.text().pattern(SLUG_PATTERN))
-            .ignore(field(PublisherJpaEntity.class, "books"))
+            //.ignore(field(PublisherJpaEntity.class, "books"))
             .toModel();
     /*******************************************************************************
      * Modelos de Author
@@ -44,7 +44,7 @@ public class InstancioModel {
             .toModel();
     public static final Model<AuthorJpaEntity> AUTHOR_JPA_ENTITY_MODEL = Instancio.of(AuthorJpaEntity.class)
             .generate(field(AuthorJpaEntity.class, "slug"), gen -> gen.text().pattern(SLUG_PATTERN))
-            .ignore(field(AuthorJpaEntity.class, "bookAuthors"))
+            //.ignore(field(AuthorJpaEntity.class, "bookAuthors"))
             .toModel();
 
     public static Model<List<AuthorEntity>> AUTHOR_ENTITY_LIST_MODEL = Instancio.ofList(AUTHOR_ENTITY_MODEL)

@@ -1,0 +1,15 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "Jane Austen",
+      "birthYear": 1775,
+      "nationality": "British",
+      "biographyEs": "Jane Austen fue una novelista inglesa conocida por sus obras que critican la sociedad de su época.",
+      "biographyEn": "Jane Austen was an English novelist known for her works that critique the society of her time.",
+      "birthYear": 1775,
+      "deathYear": 1817,
+      "slug": "jane-austen"
+    }
+  ]
+}

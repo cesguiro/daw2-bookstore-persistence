@@ -1,0 +1,9 @@
+{
+  "publishers": [
+    {
+      "id": 1,
+      "name": "updated publisher",
+      "slug": "updated-publisher"
+    }
+  ]
+}

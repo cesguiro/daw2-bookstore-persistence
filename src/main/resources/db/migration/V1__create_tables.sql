@@ -37,7 +37,7 @@ CREATE TABLE authors (
                          slug VARCHAR(255) UNIQUE
 );
 
-CREATE TABLE users (
+CREATE TABLE app_users (
                        id INT PRIMARY KEY AUTO_INCREMENT,
                        username VARCHAR(255) NOT NULL UNIQUE,
                        password VARCHAR(255) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE orders (
                         delivery_date DATETIME,
                         status INT NOT NULL DEFAULT 0, -- 0: shopping cart, 1: ordered, 2: in process, 3: sent, 4: received
                         total DECIMAL(10, 2),
-                        FOREIGN KEY (user_id) REFERENCES users(id)
+                        FOREIGN KEY (user_id) REFERENCES app_users(id)
 );
 
 CREATE INDEX idx_orders_user ON orders(user_id);

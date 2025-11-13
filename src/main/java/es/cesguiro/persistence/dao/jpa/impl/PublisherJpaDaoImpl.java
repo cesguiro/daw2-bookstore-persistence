@@ -7,6 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +32,13 @@ public class PublisherJpaDaoImpl implements PublisherJpaDao {
 
     @Override
     public List<PublisherJpaEntity> findAll(int page, int size) {
-        return null;
+        int pageIndex = Math.max(page - 1, 0);
+
+        String sql = "SELECT p FROM PublisherJpaEntity p ORDER BY p.id";
+        return entityManager.createQuery(sql, PublisherJpaEntity.class)
+                .setFirstResult(pageIndex * size)
+                .setMaxResults(size)
+                .getResultList();
     }
 
     @Override
@@ -41,12 +48,13 @@ public class PublisherJpaDaoImpl implements PublisherJpaDao {
 
     @Override
     public PublisherJpaEntity insert(PublisherJpaEntity jpaEntity) {
-        return null;
+        entityManager.persist(jpaEntity);
+        return jpaEntity;
     }
 
     @Override
     public PublisherJpaEntity update(PublisherJpaEntity jpaEntity) {
-        return null;
+        return entityManager.merge(jpaEntity);
     }
 
     @Override
@@ -54,7 +62,8 @@ public class PublisherJpaDaoImpl implements PublisherJpaDao {
 
     @Override
     public long count() {
-        return 0;
+        return entityManager.createQuery("SELECT COUNT(p) FROM PublisherJpaEntity p", Long.class)
+                .getSingleResult();
     }
 
     /********** CriteriaBuilder version **********/

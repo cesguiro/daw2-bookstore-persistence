@@ -1,0 +1,34 @@
+{
+  "publishers": [
+    { "id": 1, "name": "Publisher A", "slug": "publisher-a" }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "isbn": "1234567890123",
+      "title_es": "Libro 1",
+      "title_en": "Book 1",
+      "base_price": 19.90,
+      "discount_percentage": 0,
+      "publisher_id": 1
+    }
+  ],
+  "authors": [
+    {
+      "id": 1,
+      "name": "Author A",
+      "birthYear": 1970,
+      "nationality": "American",
+      "biographyEs": "Biografía en español",
+      "biographyEn": "Biography in English",
+      "slug": "author-a"
+    }
+  ],
+    "book_authors": [
+        {
+          "id": 1,
+          "book_id": 1,
+          "author_id": 1
+        }
+    ]
+}
