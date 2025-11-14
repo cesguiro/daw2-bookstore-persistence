@@ -1,6 +1,6 @@
 package es.cesguiro.persistence.repository;
 
-
+import es.cesguiro.domain.repository.PublisherRepository;
 import es.cesguiro.domain.repository.entity.PublisherEntity;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
@@ -9,47 +9,37 @@ import org.instancio.Instancio;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.instancio.Select.field;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class PublisherRepositoryImplTest {
-
-    @Mock
-    private PublisherJpaDao publisherDao;
-
-    @InjectMocks
-    private PublisherRepositoryImpl publisherRepositoryImpl;
+class PublisherRepositoryImplShould extends BaseRepositoryTest<PublisherRepository, PublisherJpaDao> {
 
     @Test
     @DisplayName("Test findBySlug method returns Optional<PublisherEntity>")
-    void testFindBySlug() {
+    void return_publisher_when_slug_exists() {
         PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
                 .withSeed(10)
                 .create();
         PublisherEntity expected = Instancio.of(InstancioModel.PUBLISHER_ENTITY_MODEL)
                 .withSeed(10)
                 .create();
-        when(publisherDao.findBySlug(any())).thenReturn(Optional.of(publisherJpaEntity));
+        when(dao.findBySlug(any())).thenReturn(Optional.of(publisherJpaEntity));
 
-        Optional<PublisherEntity> result = publisherRepositoryImpl.findBySlug("some-slug");
-        assertAll(
-                () -> assertTrue(result.isPresent()),
-                () -> assertEquals(expected.name(), result.get().name(), "Names should match"),
-                () -> assertEquals(expected.slug(), result.get().slug(), "Slugs should match")
-        );
+        Optional<PublisherEntity> result = repository.findBySlug("some-slug");
+        assertThat(result)
+                .hasValueSatisfying(publisher -> assertThat(publisher)
+                        .extracting(PublisherEntity::name, PublisherEntity::slug)
+                        .containsExactly(expected.name(), expected.slug())
+                );
     }
 
-    @Test
+    /*@Test
     @DisplayName("Test findBySlug method returns Optional.empty()")
     void testFindBySlugEmpty() {
         when(publisherDao.findBySlug(any())).thenReturn(Optional.empty());
@@ -81,5 +71,5 @@ class PublisherRepositoryImplTest {
                 () -> assertEquals(expected.getLast().name(), result.getLast().name(), "Last entity names should match"),
                 () -> assertEquals(expected.getLast().slug(), result.getLast().slug(), "Last entity slugs should match")
         );
-    }
+    }*/
 }

@@ -7,10 +7,10 @@
     {
       "id": 1,
       "name": "Author A",
+      "birth_year": 1970,
       "nationality": "American",
       "biography_es": "Biografía en español",
       "biography_en": "Biography in English",
-      "birth_year": 1970,
       "slug": "author-a"
     }
   ],
@@ -19,10 +19,13 @@
     {
       "id": 1,
       "isbn": "1234567890123",
-      "title_es": "Libro 1",
-      "title_en": "Book 1",
-      "base_price": 19.90,
-      "discount_percentage": 0,
+      "title_es": "Updated Title ES",
+      "title_en": "Updated Title EN",
+      "synopsis_es": "Updated Synopsis ES",
+      "synopsis_en": "Updated Synopsis EN",
+      "base_price": 99.99,
+      "discount_percentage": 99,
+      "cover": "updated-cover.jpg",
       "publisher_id": 1
     }
   ],

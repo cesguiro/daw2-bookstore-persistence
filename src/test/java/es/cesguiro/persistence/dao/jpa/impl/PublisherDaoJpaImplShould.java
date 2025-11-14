@@ -6,10 +6,18 @@ import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.Optional;
 
@@ -18,9 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DaoTest
 class PublisherDaoJpaImplShould extends BaseJpaDaoTest<PublisherJpaDao> {
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DataSet(value= "adapters/data/publishers.json")
@@ -45,25 +50,21 @@ class PublisherDaoJpaImplShould extends BaseJpaDaoTest<PublisherJpaDao> {
     }
 
     @Test
-    @DataSet(value= "adapters/data/publishers.json", transactional = true)
+    @DataSet(value= "adapters/data/publishers.json")
     @ExpectedDataSet(value= "adapters/data/publishers-after-insert.json", ignoreCols = {"id"})
-    @Transactional
     void insert_publisher_correctly() {
         PublisherJpaEntity publisherToInsert = new PublisherJpaEntity(null, "new publisher", "new-publisher");
         dao.insert(publisherToInsert);
-        //entityManager.flush();
-        //flushAndCommitForDbRider();
+        flushAndCommitForDbRider();
     }
 
     @Test
-    @DataSet(value= "adapters/data/publishers.json", transactional = true)
+    @DataSet(value= "adapters/data/publishers.json")
     @ExpectedDataSet(value= "adapters/data/publishers-after-update.json")
-    @Transactional
     void update_publisher_correctly() {
         PublisherJpaEntity publisherToUpdate = new PublisherJpaEntity(1L, "updated publisher", "updated-publisher");
         dao.update(publisherToUpdate);
-        entityManager.flush();
-        //flushAndCommitForDbRider();
+        flushAndCommitForDbRider();
     }
 
 }

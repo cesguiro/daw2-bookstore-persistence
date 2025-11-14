@@ -3,6 +3,7 @@ package es.cesguiro.persistence.dao.jpa.impl;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.core.api.dataset.ExpectedDataSet;
 import es.cesguiro.persistence.TestConfig;
+import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
@@ -26,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.time.LocalTime.now;
@@ -34,116 +36,68 @@ import static org.assertj.core.api.Assertions.assertThatException;
 import static org.instancio.Select.field;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@DataJpaTest
-@ContextConfiguration(classes = TestConfig.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@DaoTest
 class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
-    /*@Autowired
-    private BookJpaDao bookJpaDao;*/
-
-    @Autowired
-    private PublisherJpaDao publisherJpaDao;
-
-    @Autowired
-    private AuthorJpaDao authorJpaDao;
 
 
     @Test
-    @DataSet(value= "adapters/data/books.json", transactional = true)
+    @DataSet(value= "adapters/data/books.json")
     @ExpectedDataSet(value= "adapters/data/books-after-insert.json", ignoreCols = {"id"})
-    @Transactional
     void insert_book_correctly() {
-        PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
-                .ignore(field(PublisherJpaEntity::getId))
-                .create();
-        entityManager.persist(publisherJpaEntity);
 
-        List<AuthorJpaEntity> authorJpaEntities =Instancio.ofList(InstancioModel.AUTHOR_JPA_ENTITY_MODEL)
-                .size(2)
-                .ignore(field(AuthorJpaEntity::getId))
-                .create();
-        authorJpaEntities.forEach(entityManager::persist);
+        PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
+        publisherJpaEntity.setId(1L);
 
-        BookJpaEntity newBook = Instancio.of(InstancioModel.BOOK_JPA_ENTITY_MODEL)
-                .ignore(field(BookJpaEntity::getId))
-                .set(field(BookJpaEntity::getPublisher), publisherJpaEntity)
-                .lenient()
-                .create();
+        AuthorJpaEntity authorJpaEntity = new AuthorJpaEntity();
+        authorJpaEntity.setId(1L);
 
-        newBook.setAuthors(authorJpaEntities);
-
-        // Insertar usando DAO
-        dao.insert(newBook);
-
-        //entityManager.flush();
-        // Forzamos commit para que DBRider pueda validar los datos
-        //flushAndCommitForDbRider();
-        /*PublisherJpaEntity publisherJpaEntity = Instancio.of(InstancioModel.PUBLISHER_JPA_ENTITY_MODEL)
-                .ignore(field(PublisherJpaEntity::getId))
-                .create();
-        entityManager.persist(publisherJpaEntity);
-
-        List<AuthorJpaEntity> authorJpaEntities =Instancio.ofList(InstancioModel.AUTHOR_JPA_ENTITY_MODEL)
-                .size(2)
-                .ignore(field(AuthorJpaEntity::getId))
-                .create();
-        authorJpaEntities.forEach(entityManager::persist);
-
-        BookJpaEntity newBook = Instancio.of(InstancioModel.BOOK_JPA_ENTITY_MODEL)
-                .ignore(field(BookJpaEntity::getId))
-                .set(field(BookJpaEntity::getPublisher), publisherJpaEntity)
-                .lenient()
-                .create();
-
-        newBook.setAuthors(authorJpaEntities);
-
-        long countBefore = bookJpaDao.count();
-        BookJpaEntity result = bookJpaDao.insert(newBook);
-        long countAfter = bookJpaDao.count();
-
-        assertThat(result)
-                .isNotNull()
-                .extracting(BookJpaEntity::getId)
-                .isNotNull();
-        assertThat(result)
-                .usingRecursiveComparison()
-                .ignoringFields("id")
-                .isEqualTo(newBook);
-        assertThat(result.getAuthors())
-                .extracting(AuthorJpaEntity::getId)
-                .containsExactlyInAnyOrderElementsOf(
-                        authorJpaEntities.stream()
-                                .map(AuthorJpaEntity::getId)
-                                .collect(Collectors.toSet())
-                );
-        assertThat(countAfter).isEqualTo(countBefore + 1);*/
-    }
-
-    /*@Test
-    void update_simple_fields_of_book_when_isbn_exists() {
-        BookJpaEntity bookToUpdate = bookJpaDao.findById(1L).orElseThrow(
-                () -> new IllegalStateException("Book with id 1L not found")
+        BookJpaEntity newBook = new BookJpaEntity(
+                null,
+                "9876543210987",
+                "Libro 2",
+                "Book 2",
+                null,
+                null,
+                new BigDecimal("29.90"),
+                new BigDecimal("5.00"),
+                null,
+                null,
+                publisherJpaEntity,
+                List.of(authorJpaEntity)
         );
 
-        bookToUpdate.setTitleEs("Updated Title ES " + now());
-        bookToUpdate.setTitleEn("Updated Title EN " + now());
-        bookToUpdate.setSynopsisEs("Updated Synopsis ES " + now());
-        bookToUpdate.setSynopsisEn("Updated Synopsis EN " + now());
-        bookToUpdate.setBasePrice(new BigDecimal("99.99"));
-        bookToUpdate.setDiscountPercentage(new BigDecimal("99.00"));
-        bookToUpdate.setPublicationDate(LocalDate.now());
-        bookToUpdate.setCover("updated-cover-" + now() + ".jpg");
+        dao.insert(newBook);
+        flushAndCommitForDbRider();
+    }
 
-        BookJpaEntity result = bookJpaDao.update(bookToUpdate);
+    @Test
+    @DataSet(value= "adapters/data/books.json")
+    @ExpectedDataSet(value= "adapters/data/books-after-update-simple-fields.json", ignoreCols = {"id"})
+    void update_simple_fields_of_book_when_isbn_exists() {
+        PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
+        publisherJpaEntity.setId(1L);
 
-        assertThat(result)
-                .usingRecursiveComparison()
-                .isEqualTo(bookToUpdate);
+        AuthorJpaEntity authorJpaEntity = new AuthorJpaEntity();
+        authorJpaEntity.setId(1L);
 
-    }*/
+
+        BookJpaEntity bookToUpdate = new BookJpaEntity(
+                1L,
+                "1234567890123",
+                "Updated Title ES",
+                "Updated Title EN",
+                "Updated Synopsis ES",
+                "Updated Synopsis EN",
+                new BigDecimal("99.99"),
+                new BigDecimal("99.00"),
+                "updated-cover.jpg",
+                LocalDate.of(2024, 1, 1),
+                publisherJpaEntity,
+                List.of(authorJpaEntity)
+        );
+
+        dao.update(bookToUpdate);
+        flushAndCommitForDbRider();
+    }
 
 }

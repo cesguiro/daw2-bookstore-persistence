@@ -1,0 +1,24 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "Jane Austen",
+      "nationality": "British",
+      "biography_es": "Jane Austen fue una novelista inglesa conocida por sus obras que critican la sociedad de su época.",
+      "biography_en": "Jane Austen was an English novelist known for her works that critique the society of her time.",
+      "birth_year": 1775,
+      "death_year": 1817,
+      "slug": "jane-austen"
+    },
+    {
+      "id": 2,
+      "name": "Mark Twain",
+      "nationality": "American",
+      "biography_es": "Mark Twain fue un escritor y humorista estadounidense, conocido por sus novelas 'Las aventuras de Tom Sawyer' y 'Las aventuras de Huckleberry Finn'.",
+      "biography_en": "Mark Twain was an American writer and humorist, known for his novels 'The Adventures of Tom Sawyer' and 'The Adventures of Huckleberry Finn'.",
+      "birth_year": 1835,
+      "death_year": 1910,
+      "slug": "mark-twain"
+    }
+  ]
+}

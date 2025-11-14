@@ -22,7 +22,7 @@ import java.lang.annotation.Target;
 @DataJpaTest(showSql = false)
 @DBRider
 @EnableSqlLogging
-@Transactional(propagation = Propagation.NOT_SUPPORTED)
+//@Transactional(propagation = Propagation.NOT_SUPPORTED)
 @DBUnit(caseInsensitiveStrategy = Orthography.LOWERCASE)
 @ContextConfiguration(classes = TestConfig.class)
 @AutoConfigureTestDatabase(replace =  AutoConfigureTestDatabase.Replace.NONE)

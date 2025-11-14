@@ -2,6 +2,19 @@
   "publishers": [
     { "id": 1, "name": "Publisher A", "slug": "publisher-a" }
   ],
+
+  "authors": [
+    {
+      "id": 1,
+      "name": "Author A",
+      "birth_year": 1970,
+      "nationality": "American",
+      "biography_es": "Biografía en español",
+      "biography_en": "Biography in English",
+      "slug": "author-a"
+    }
+  ],
+
   "books": [
     {
       "id": 1,
@@ -22,18 +35,8 @@
       "publisher_id": 1
     }
   ],
-  "authors": [
-    {
-      "id": 1,
-      "name": "Author A",
-      "birthYear": 1970,
-      "nationality": "American",
-      "biographyEs": "Biografía en español",
-      "biographyEn": "Biography in English",
-      "slug": "author-a"
-    }
-  ],
-  "book_authors": [
+
+  "book_author": [
     {
       "id": 1,
       "book_id": 1,
