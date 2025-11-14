@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -28,13 +29,33 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-class BookRepositoryImplTest {
+class BookRepositoryImplShould {
 
     @Mock
     private BookJpaDao bookJpaDao;
 
     @InjectMocks
-    private BookRepositoryImpl bookRepositoryImpl;
+    private BookRepositoryImpl bookRepository;
+
+    @Test
+    public void return_list_of_books_when_page_1_and_pages_more_than_1(){
+        List<BookJpaEntity> bookJpaEntities = Instancio.ofList(InstancioModel.BOOK_JPA_ENTITY_MODEL)
+                .size(2)
+                .withSeed(20)
+                .create();
+        List<BookEntity> expectedBookEntities = bookJpaEntities.stream()
+                .map(BookMapper.INSTANCE::fromBookJpaEntityToBookEntity)
+                .toList();
+        when(bookJpaDao.findAll(1, 2)).thenReturn(bookJpaEntities);
+        when(bookJpaDao.count()).thenReturn(5L);
+
+        Page<BookEntity> expected = new Page<>(expectedBookEntities, 1, 2, 5L);
+        Page<BookEntity> result = bookRepository.findAll(1, 2);
+
+        assertThat(result)
+                .usingRecursiveComparison()
+                .isEqualTo(expected);
+    }
 
     static Stream<Arguments> provideFindAllArguments() {
         return Stream.of(
@@ -64,7 +85,7 @@ class BookRepositoryImplTest {
                 pageSize,
                 expectedTotalElements
         );
-        Page <BookEntity> result = bookRepositoryImpl.findAll(pageNumber, pageSize);
+        Page <BookEntity> result = bookRepository.findAll(pageNumber, pageSize);
 
         // Assert
         assertAll(
@@ -86,7 +107,7 @@ class BookRepositoryImplTest {
                 .thenReturn(Optional.of(bookJpaEntity));
 
         Optional<BookEntity> expected = Optional.of(BookMapper.INSTANCE.fromBookJpaEntityToBookEntity(bookJpaEntity));
-        Optional<BookEntity> result = bookRepositoryImpl.findByIsbn("some-isbn");
+        Optional<BookEntity> result = bookRepository.findByIsbn("some-isbn");
 
 
         // Assert
@@ -114,7 +135,7 @@ class BookRepositoryImplTest {
         when(bookJpaDao.findByIsbn(anyString()))
                 .thenReturn(Optional.empty());
 
-        Optional<BookEntity> result = bookRepositoryImpl.findByIsbn("non-existent-isbn");
+        Optional<BookEntity> result = bookRepository.findByIsbn("non-existent-isbn");
 
         // Assert
         assertFalse(result.isPresent(), "BookEntity should not be present");
