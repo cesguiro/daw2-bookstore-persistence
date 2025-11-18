@@ -42,7 +42,7 @@
         <org.apache.maven.compiler.plugin.version>3.14.0</org.apache.maven.compiler.plugin.version>
         <org.apache.commons.csv.version>1.13.0</org.apache.commons.csv.version>
         <com.h2database.version>2.3.232</com.h2database.version>
-        <org.flywaydb.version>11.3.0</org.flywaydb.version>
+        <org.flywaydb.version>11.17.0</org.flywaydb.version>
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <org.spring.boot.version>3.5.6</org.spring.boot.version>
         <jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
@@ -97,11 +97,15 @@
             <version>${com.h2database.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
             <version>${org.flywaydb.version}</version>
-            <!--<scope>test</scope>-->
+        </dependency>-->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-mysql</artifactId>
+            <version>${org.flywaydb.version}</version>
         </dependency>
         <dependency>
             <groupId>org.instancio</groupId>
