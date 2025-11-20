@@ -8,19 +8,21 @@ import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.BookJpaEntity;
 import es.cesguiro.persistence.dao.jpa.entity.PublisherJpaEntity;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @DaoTest
 class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
-
 
     @Test
     @DataSet(value= "adapters/data/books.json")
     @ExpectedDataSet(value= "adapters/data/books-after-insert.json", ignoreCols = {"id"})
-    void insert_book_correctly() {
+    void insert_book_with_simple_fields_correctly() {
 
         PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
         publisherJpaEntity.setId(1L);
@@ -33,10 +35,10 @@ class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
                 "9876543210987",
                 "Libro 2",
                 "Book 2",
+                "sinopsis del libro 2",
+                "book 2 synopsis",
+                new BigDecimal("0"),
                 null,
-                null,
-                new BigDecimal("29.90"),
-                new BigDecimal("5.00"),
                 null,
                 null,
                 publisherJpaEntity,
@@ -44,8 +46,12 @@ class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
         );
 
         dao.insert(newBook);
-        flushAndCommitForDbRider();
+
+        assertThat(newBook.getId()).isNotNull();
+        //flushAndCommitForDbRider();
     }
+
+    // Testear isbn repetido por concurrencia -> la excepción debería capturarse en un nivel superior (servicio) (ValidationException de domain?)
 
     @Test
     @DataSet(value= "adapters/data/books.json")
@@ -74,7 +80,7 @@ class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
         );
 
         dao.update(bookToUpdate);
-        flushAndCommitForDbRider();
+        //flushAndCommitForDbRider();
     }
 
 }

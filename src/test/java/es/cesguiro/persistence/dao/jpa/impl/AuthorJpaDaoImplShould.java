@@ -6,10 +6,10 @@ import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @DaoTest
 class AuthorJpaDaoImplShould extends BaseJpaDaoTest<AuthorJpaDao> {
-
 
     @Test
     @DataSet(value= "adapters/data/authors.json")
@@ -26,7 +26,7 @@ class AuthorJpaDaoImplShould extends BaseJpaDaoTest<AuthorJpaDao> {
                 "mark-twain"
         );
         dao.insert(newAuthor);
-        flushAndCommitForDbRider();
+        //flushAndCommitForDbRider();
     }
 
 }
