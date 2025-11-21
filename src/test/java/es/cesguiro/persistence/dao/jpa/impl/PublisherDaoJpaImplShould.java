@@ -1,7 +1,6 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
+
 import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.PublisherJpaDao;
 import jakarta.persistence.EntityManager;

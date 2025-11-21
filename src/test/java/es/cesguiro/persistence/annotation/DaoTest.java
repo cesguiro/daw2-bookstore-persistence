@@ -1,8 +1,6 @@
 package es.cesguiro.persistence.annotation;
 
-import com.github.database.rider.core.api.configuration.DBUnit;
-import com.github.database.rider.core.api.configuration.Orthography;
-import com.github.database.rider.junit5.api.DBRider;
+
 import es.cesguiro.persistence.TestConfig;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

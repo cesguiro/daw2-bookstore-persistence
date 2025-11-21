@@ -1,13 +1,9 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import com.github.database.rider.core.api.dataset.DataSet;
-import jakarta.persistence.EntityManager;
-import org.flywaydb.core.Flyway;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.context.transaction.TestTransaction;
 import org.testcontainers.containers.MariaDBContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.utility.DockerImageName;
@@ -17,10 +13,20 @@ public abstract class BaseJpaDaoTest<T> {
     @Autowired
     protected T dao;
 
-    @Container
+    // Singleton MariaDBContainer for all tests
+    static final MariaDBContainer<?> mariaDBContainer;
+
+    /*@Container
     static MariaDBContainer<?> mariaDBContainer = new  MariaDBContainer<>(
             DockerImageName.parse("mariadb:10.11")
-    );
+    );*/
+
+    static {
+        mariaDBContainer = new MariaDBContainer<>(
+                DockerImageName.parse("mariadb:10.11")
+        );
+        mariaDBContainer.start();
+    }
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {

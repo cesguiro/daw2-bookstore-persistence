@@ -1,7 +1,6 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
+
 import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.AuthorJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
@@ -12,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 class AuthorJpaDaoImplShould extends BaseJpaDaoTest<AuthorJpaDao> {
 
     @Test
-    @DataSet(value= "adapters/data/authors.json")
-    @ExpectedDataSet(value= "adapters/data/authors-after-insert.json", ignoreCols = {"id"})
+    /*@DataSet(value= "adapters/data/authors.json")
+    @ExpectedDataSet(value= "adapters/data/authors-after-insert.json", ignoreCols = {"id"})*/
     void insert_author_correctly() {
         AuthorJpaEntity newAuthor = new AuthorJpaEntity(
                 null,

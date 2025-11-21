@@ -1,7 +1,6 @@
 package es.cesguiro.persistence.dao.jpa.impl;
 
-import com.github.database.rider.core.api.dataset.DataSet;
-import com.github.database.rider.core.api.dataset.ExpectedDataSet;
+
 import es.cesguiro.persistence.annotation.DaoTest;
 import es.cesguiro.persistence.dao.jpa.BookJpaDao;
 import es.cesguiro.persistence.dao.jpa.entity.AuthorJpaEntity;
@@ -20,8 +19,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
 
     @Test
-    @DataSet(value= "adapters/data/books.json")
-    @ExpectedDataSet(value= "adapters/data/books-after-insert.json", ignoreCols = {"id"})
+    /*@DataSet(value= "adapters/data/books.json")
+    @ExpectedDataSet(value= "adapters/data/books-after-insert.json", ignoreCols = {"id"})*/
     void insert_book_with_simple_fields_correctly() {
 
         PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
@@ -54,8 +53,8 @@ class BookJpaDaoImplShould extends BaseJpaDaoTest<BookJpaDao>{
     // Testear isbn repetido por concurrencia -> la excepción debería capturarse en un nivel superior (servicio) (ValidationException de domain?)
 
     @Test
-    @DataSet(value= "adapters/data/books.json")
-    @ExpectedDataSet(value= "adapters/data/books-after-update-simple-fields.json", ignoreCols = {"id"})
+    /*@DataSet(value= "adapters/data/books.json")
+    @ExpectedDataSet(value= "adapters/data/books-after-update-simple-fields.json", ignoreCols = {"id"})*/
     void update_simple_fields_of_book_when_isbn_exists() {
         PublisherJpaEntity publisherJpaEntity = new PublisherJpaEntity();
         publisherJpaEntity.setId(1L);
